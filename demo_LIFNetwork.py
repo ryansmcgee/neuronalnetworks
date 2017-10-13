@@ -13,15 +13,19 @@
 # import NetworkConnectivity
 # from MidpointNormalize import MidpointNormalize
 
-
+from NetworkModels.LIFNetwork import LIFNetwork
 
 
 network 	= LIFNetwork()
 
-network.add_neurons()
+network.add_neurons(numNeuronsToAdd=100,
+					V_init=-68.0, V_thresh=-50.0, V_reset=-70.0, V_eqLeak=-68.0, V_eqExcit=0.0, V_eqInhib=-70.0, R_membrane=1.0,
+					g_leak=0.3, g_excit_init=0.0, g_inhib_init=0.0, g_gap=0.5,
+					tau_g_excit=2.0, tau_g_inhib=2.0, refracPeriod=3.0,
+					synapse_type='excitatory')
 
-network.geometry = SpheroidSurface(r_xy=10, r_z=10)
-network.geometry.position_neurons(coordinates='random')
+# network.geometry = SpheroidSurface(r_xy=10, r_z=10)
+# network.geometry.position_neurons(coordinates='random')
 
 network.set_synaptic_connectivity()
 network.set_gapjunction_connectivity()

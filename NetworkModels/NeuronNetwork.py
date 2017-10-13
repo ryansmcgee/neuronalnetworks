@@ -1,5 +1,5 @@
-from abc import ABCMeta, abstractmethod
 from __future__ import division
+from abc import ABCMeta, abstractmethod
 
 import numpy as numpy
 import pandas as pandas
@@ -56,6 +56,8 @@ class NeuronNetwork(object):
 		# Input metadata: ~
 		#~~~~~~~~~~~~~~~~~~
 		self.inputIDs 			= numpy.empty(shape=[0])
+		self.inputTypes			= numpy.empty(shape=[0])
+		self.inputLabels		= numpy.empty(shape=[0])
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~
 		# Connectivity Matrices: ~
@@ -81,7 +83,7 @@ class NeuronNetwork(object):
 		#~~~~~~~~~~~~~
 		# Data Logs: ~
 		#~~~~~~~~~~~~~
-		# Dictionary with format: {'variable': {'enabled': True, 'dataSeries': []}, ...}
+		# Dictionary with format: {'variable': {'enabled': True, 'data': []}, ...}
 		# Subclass implementation should define the variables (ie dictionary keys) to include.
 		self.neuronLogs = {}
 		self.inputLogs 	= {}
@@ -286,16 +288,41 @@ class NeuronNetwork(object):
 		"""  """
 		pass
 
-	@abstractmethod
+	
 	def initialize_simulation(self, T_max=None, deltaT=None, integrationMethod=None):
+		#~~~~~
+		# For any parameter values given in the call to initializeSimulation, set the network attributes accordingly.
+		# For parameters whose values are not specified in the call to initializeSimulation, continue with the default values given in the class constructor.
+		#~~~~~
+		if(T_max is not None):
+			self.T_max 				= T_max
+		if(deltaT is not None):
+			self.deltaT 			= deltaT
+		if(integrationMethod is not None):
+			self.integrationMethod	= integrationMethod
+
+		#~~~~~
+		# Initialize time related and length-of-simulation dependent variables and containers
+		#~~~~~
+		self.timeSeries 		= numpy.arange(0, self.T_max, self.deltaT)
+		self.numTimeSteps		= len(self.timeSeries)
+		self.timeStepIndex 		= 0
+		self.t 					= 0
+
+		for variable in self.neuronLogVariables:
+			self.neuronLogs[variable]['data'] = [[numpy.nan for t in range(self.numTimeSteps)] for n in range(self.N)]
+
+		for variable in self.inputLogVariables:
+			self.inputLogs[variable]['data'] = [[numpy.nan for t in range(self.numTimeSteps)] for n in range(self.numInputs)]
+
 		"""
-		Set the simulation variable attributes (e.g., T, deltaT)
-		Initialize time related and length-of-simulation dependent variables and containers
-		Initialize dataLogs data structures
-		Any other model-specific network or dynamics initialzations
-		Set the simulationInitialized flag to true
+		Define any other model-specific network or dynamics initialzations in subclasses
 		"""
-		pass
+
+		# The simulation is now flagged as initialized:
+		self.simulationInitialized	= True
+
+		return
 
 
 	@abstractmethod
@@ -381,8 +408,8 @@ class NeuronNetwork(object):
 		neuronsDataFrame	= pandas.DataFrame( columns=list(self.neuronLogs.keys()) )
 		for n, nID in enumerate(self.neuronIDs):
 			neuronData	= []
-			for variable, dataSeries in enumerate(self.neuronLogs):
-				neuronData.append( (variable, dataSeries) )
+			for variable, data in enumerate(self.neuronLogs):
+				neuronData.append( (variable, data) )
 
 			neuronsDataFrame	= pandas.concat([ neuronsDataFrame, pandas.DataFrame.from_items(neuronData) ])
 
@@ -393,8 +420,8 @@ class NeuronNetwork(object):
 		inputsDataFrame	= pandas.DataFrame( columns=list(self.inputLogs.keys()) )
 		for n, nID in enumerate(self.inputIDs):
 			inputData	= []
-			for variable, dataSeries in enumerate(self.inputLogs):
-				inputData.append( (variable, dataSeries) )
+			for variable, data in enumerate(self.inputLogs):
+				inputData.append( (variable, data) )
 
 			inputsDataFrame	= pandas.concat([ inputsDataFrame, pandas.DataFrame.from_items(inputData) ])
 
