@@ -68,7 +68,7 @@ class LIFNetwork(NeuronNetwork):
 		self.constAlpha_g_inhib	= None
 		self.constBeta_g_inhib	= None
 
-		
+
 		############################
 		# INPUT PARAMETER VECTORS: #
 		############################
@@ -158,7 +158,7 @@ class LIFNetwork(NeuronNetwork):
 		#--------------------
 		# TODO: Make sure this function call is justified
 		if(self.geometry is not None):
-			self.geometry.addNeurons(numNeuronsToAdd)
+			self.geometry.add_neurons(numNeuronsToAdd)
 
 		return
 
@@ -235,7 +235,7 @@ class LIFNetwork(NeuronNetwork):
 				self.inputLogs['label'][n][self.timeStepIndex]	= self.inputLabels[n]
 
 		return
-		
+
 
 	def initialize_simulation(self, T_max=None, deltaT=None, integrationMethod=None):
 		# Call the standard network simulation initialization:
@@ -284,10 +284,10 @@ class LIFNetwork(NeuronNetwork):
 		# which are pre-calculated at network initialization according to integration method
 		synpaseInducedConductanceChange_excit 	= self.connectionWeights_synExcit.T.dot(self.spikeEvents*self.diracDeltaValue())
 		synpaseInducedConductanceChange_inhib 	= self.connectionWeights_synInhib.T.dot(self.spikeEvents*self.diracDeltaValue())
-		inputInducedConductanceChange_excit 	= self.connectionWeights_inpExcit.T.dot(self.inputValues_excit) if self.numInputs_excit() > 0 else numpy.zeros(self.N)	
-		inputInducedConductanceChange_inhib 	= self.connectionWeights_inpInhib.T.dot(self.inputValues_inhib) if self.numInputs_inhib() > 0 else numpy.zeros(self.N) 	
-		
-		self.g_excit 	= self.constAlpha_g_excit*self.g_excit + self.constBeta_g_excit*(synpaseInducedConductanceChange_excit  + inputInducedConductanceChange_excit) 
+		inputInducedConductanceChange_excit 	= self.connectionWeights_inpExcit.T.dot(self.inputValues_excit) if self.numInputs_excit() > 0 else numpy.zeros(self.N)
+		inputInducedConductanceChange_inhib 	= self.connectionWeights_inpInhib.T.dot(self.inputValues_inhib) if self.numInputs_inhib() > 0 else numpy.zeros(self.N)
+
+		self.g_excit 	= self.constAlpha_g_excit*self.g_excit + self.constBeta_g_excit*(synpaseInducedConductanceChange_excit  + inputInducedConductanceChange_excit)
 		self.g_inhib 	= self.constAlpha_g_inhib*self.g_inhib + self.constBeta_g_inhib*(synpaseInducedConductanceChange_inhib  + inputInducedConductanceChange_inhib)
 
 		#******************
@@ -304,8 +304,8 @@ class LIFNetwork(NeuronNetwork):
 		if(self.integrationMethod == 'euler' or self.integrationMethod == 'forwardeuler' or self.integrationMethod == 'rk1'):
 
 			self.V 	= R_dt*( ((1/R_dt)-(self.g_leak + self.g_excit + self.g_inhib + self.g_gap*self.connectionWeights_gap.sum(axis=0)))*self.V
-						+ self.g_leak*self.V_eqLeak + self.g_excit*self.V_eqExcit + self.g_inhib*self.V_eqInhib + self.g_gap*self.connectionWeights_gap.T.dot(self.V) 
-						#+ (self.connectionWeights_inpExcit.T.dot(self.inputValues_excit) if self.numInputs_excit() > 0 else numpy.zeros(self.N)	) 
+						+ self.g_leak*self.V_eqLeak + self.g_excit*self.V_eqExcit + self.g_inhib*self.V_eqInhib + self.g_gap*self.connectionWeights_gap.T.dot(self.V)
+						#+ (self.connectionWeights_inpExcit.T.dot(self.inputValues_excit) if self.numInputs_excit() > 0 else numpy.zeros(self.N)	)
 						) #[incomplete edit 13sept17]
 
 		elif(self.integrationMethod == 'trapezoid' or self.integrationMethod == 'trapezoidal'):
@@ -345,5 +345,5 @@ class LIFNetwork(NeuronNetwork):
 			else:
 				self.spikeEvents[n]		= 0
 				self.timeSinceSpike[n]	+= self.deltaT
-	
+
 

@@ -106,37 +106,39 @@ class NeuronNetwork(object):
 		return
 
 
-	def set_synaptic_connectivity(self, connectivityMatrix, updateNeurons=None, synapseType='excitatory'):
+	def set_synaptic_connectivity(self, connectivity, updateNeurons=None, synapseType='excitatory'):
 		#  TODO check if any neurons have both excitatory and inhibitory outgoing connections. print a warning if so, but don't change anything. leave up to higher level scripts to make sure their construction of network doesn't have neurons that are both, unless that's what they want
 
 		# Check that the weight matrix provided is in the correct form, and convert the matrix to a numpy.ndarray type:
 		try:
-			synapticConnectivityMatrix	= connectivityMatrix
-			if(not isinstance(synapticConnectivityMatrix, numpy.ndarray)):
-				synapticConnectivityMatrix	= numpy.atleast_2d(synapticConnectivityMatrix)
-			if(synapticConnectivityMatrix.ndim != 2):
+			synapticConnectivity	= connectivity
+			if(not isinstance(synapticConnectivity, numpy.ndarray)):
+				synapticConnectivity	= numpy.atleast_2d(synapticConnectivity)
+			if(synapticConnectivity.ndim != 2):
 				raise ValueError
 		except ValueError:
-			print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects argument 'connectivityMatrix' to be a 2D numeric weight matrix as its argument (list-of-lists or numpy.ndarray)")
+			print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects argument 'connectivity' to be a 2D numeric weight matrix as its argument (list-of-lists or numpy.ndarray)")
 			exit()
+
+		print "synapticConnectivity:\n" + str(synapticConnectivity)
 
 		#--------------------
 		# When a list of neurons to update is not given, the connectivity for the entire network is updated.
-		#	- 'connectivityMatrix' argument is expected to be an NxN matrix.
+		#	- 'connectivity' argument is expected to be an NxN matrix.
 		#--------------------
 		if(updateNeurons == None):
 			# Check that the dimension of the weight matrix provided matches the number of neurons in the network:
-			if(synapticConnectivityMatrix.shape[0] != self.N or synapticConnectivityMatrix.shape[1] != self.N):
-				print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects NxN weight matrix to be given as the argument 'connectivityMatrix', where N = num neurons in network. The given matrix has dimensions "+str(synapticConnectivityMatrix.shape[1])+"x"+str(synapticConnectivityMatrix.shape[0])+", but the current num neurons is "+str(self.N))
+			if(synapticConnectivity.shape[0] != self.N or synapticConnectivity.shape[1] != self.N):
+				print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects NxN weight matrix to be given as the argument 'connectivity', where N = num neurons in network. The given matrix has dimensions "+str(synapticConnectivity.shape[1])+"x"+str(synapticConnectivity.shape[0])+", but the current num neurons is "+str(self.N))
 				exit()
 
 			#--------------------
 			# Set the network's ConnectWeights_syn[Excit/Inhib] to the given connectivity matrix, according to the input type (excitatory/inhibitory).
 			#--------------------
 			if(synapseType.lower() == 'excitatory' or synapseType.lower() == 'e'):
-				self.ConnectionWeights_synExcit 	= synapticConnectivityMatrix
+				self.connectionWeights_synExcit 	= synapticConnectivity
 			elif(synapseType.lower() == 'inhibitory' or synapseType.lower() == 'i'):
-				self.ConnectionWeights_synInhib		= synapticConnectivityMatrix
+				self.connectionWeights_synInhib		= synapticConnectivity
 			else:
 				print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects synapseType to be specified as ['excitatory'|'e'] or ['inhibitory'|'i'])")
 				exit()
@@ -157,8 +159,8 @@ class NeuronNetwork(object):
 				print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects the optional argument updateNeurons, when provided, to be a list of integer neuron ID numbers with no duplicate IDs")
 				exit()
 			# Check that the dimension of the weight matrix provided matches the number of neurons in the network:
-			if(synapticConnectivityMatrix.shape[0] != len(updateNeurons) or synapticConnectivityMatrix.shape[1] != self.N):
-				print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects mxN weight matrix to be given as the argument connectivityMatrix, where m = num neurons designated for update in the updateNeurons argument, and N = num neurons in network. The given matrix has dimensions "+str(synapticConnectivityMatrix.shape[0])+"x"+str(synapticConnectivityMatrix.shape[1])+", but the num neurons to update is " +str(len(updateNeurons))+ " and the current num neurons is "+str(self.N))
+			if(synapticConnectivity.shape[0] != len(updateNeurons) or synapticConnectivity.shape[1] != self.N):
+				print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects mxN weight matrix to be given as the argument connectivity, where m = num neurons designated for update in the updateNeurons argument, and N = num neurons in network. The given matrix has dimensions "+str(synapticConnectivity.shape[0])+"x"+str(synapticConnectivity.shape[1])+", but the num neurons to update is " +str(len(updateNeurons))+ " and the current num neurons is "+str(self.N))
 				exit()
 
 			#--------------------
@@ -168,11 +170,11 @@ class NeuronNetwork(object):
 			if(synapseType.lower() == 'excitatory' or synapseType.lower() == 'e'):
 				for i in range(len(updateNeurons)):
 					updateNeuronID 	= updateNeurons[i]
-					self.ConnectionWeights_synExcit[updateNeuronID]	= synapticConnectivityMatrix[i]
+					self.connectionWeights_synExcit[updateNeuronID]	= synapticConnectivity[i]
 			elif(synapseType.lower() == 'inhibitory' or synapseType.lower() == 'i'):
 				for i in range(len(updateNeurons)):
 					updateNeuronID 	= updateNeurons[i]
-					self.ConnectionWeights_synInhib[updateNeuronID]	= synapticConnectivityMatrix[i]
+					self.connectionWeights_synInhib[updateNeuronID]	= synapticConnectivity[i]
 			else:
 				print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects synapseType to be specified as ['excitatory'|'e'] or ['inhibitory'|'i'])")
 				exit()
@@ -180,16 +182,16 @@ class NeuronNetwork(object):
 		return
 
 
-	def set_gapJunction_connectivity(self, connectivityMatrix, updateNeurons=None):
+	def set_gapJunction_connectivity(self, connectivity, updateNeurons=None):
 				# Check that the weight matrix provided is in the correct form, and convert the matrix to a numpy.ndarray type:
 		try:
-			gapConnectivityMatrix	= connectivityMatrix
-			if(not isinstance(gapConnectivityMatrix, numpy.ndarray)):
-				gapConnectivityMatrix	= numpy.atleast_2d(gapConnectivityMatrix)
-			if(gapConnectivityMatrix.ndim != 2):
+			gapConnectivity	= connectivity
+			if(not isinstance(gapConnectivity, numpy.ndarray)):
+				gapConnectivity	= numpy.atleast_2d(gapConnectivity)
+			if(gapConnectivity.ndim != 2):
 				raise ValueError
 		except ValueError:
-			print("(NeuronNetwork) Error: The method set_gapJunction_connectivity expects connectivityMatrix to be a 2D numeric weight matrix as its argument (list-of-lists or numpy.ndarray)")
+			print("(NeuronNetwork) Error: The method set_gapJunction_connectivity expects connectivity to be a 2D numeric weight matrix as its argument (list-of-lists or numpy.ndarray)")
 			exit()
 
 		if(updateNeurons == None):
@@ -198,14 +200,14 @@ class NeuronNetwork(object):
 			#	- 'connectivity' argument is expected to be an NxN matrix.
 			#--------------------
 			# Check that the dimension of the weight matrix provided matches the number of neurons in the network:
-			if(gapConnectivityMatrix.shape[0] != self.N or gapConnectivityMatrix.shape[1] != self.N):
-				print("(NeuronNetwork) Error: The method set_gapJunction_connectivity expects NxN weight matrix to be given as the argument connectivityMatrix, where N = num neurons in network. The given matrix has dimensions "+str(gapConnectivityMatrix.shape[1])+"x"+str(gapConnectivityMatrix.shape[0])+", but the current num neurons is "+str(self.N))
+			if(gapConnectivity.shape[0] != self.N or gapConnectivity.shape[1] != self.N):
+				print("(NeuronNetwork) Error: The method set_gapJunction_connectivity expects NxN weight matrix to be given as the argument connectivity, where N = num neurons in network. The given matrix has dimensions "+str(gapConnectivity.shape[1])+"x"+str(gapConnectivity.shape[0])+", but the current num neurons is "+str(self.N))
 				exit()
 
 			#--------------------
 			# Set the network's ConnectWeights_gap to the given connectivity matrix, according to the input type (excitatory/inhibitory).
 			#--------------------
-			self.ConnectionWeights_gap 	= gapConnectivityMatrix
+			self.connectionWeights_gap 	= gapConnectivity
 
 		else:
 			#--------------------
@@ -223,38 +225,38 @@ class NeuronNetwork(object):
 				print("(NeuronNetwork) Error: The method set_gapJunction_connectivity expects the optional argument updateNeurons, when provided, to be a list of integer neuron ID numbers with no duplicate IDs")
 				exit()
 			# Check that the dimension of the weight matrix provided matches the number of neurons in the network:
-			if(gapConnectivityMatrix.shape[0] != len(updateNeurons) or gapConnectivityMatrix.shape[1] != self.N):
-				print("(NeuronNetwork) Error: The method set_gapJunction_connectivity expects mxN weight matrix to be given as the argument connectivityMatrix, where m = num neurons designated for update in the updateNeurons argument, and N = num neurons in network. The given matrix has dimensions "+str(gapConnectivityMatrix.shape[0])+"x"+str(gapConnectivityMatrix.shape[1])+", but the num neurons to update is " +str(len(updateNeurons))+ " and the current num neurons is "+str(self.N))
+			if(gapConnectivity.shape[0] != len(updateNeurons) or gapConnectivity.shape[1] != self.N):
+				print("(NeuronNetwork) Error: The method set_gapJunction_connectivity expects mxN weight matrix to be given as the argument connectivity, where m = num neurons designated for update in the updateNeurons argument, and N = num neurons in network. The given matrix has dimensions "+str(gapConnectivity.shape[0])+"x"+str(gapConnectivity.shape[1])+", but the num neurons to update is " +str(len(updateNeurons))+ " and the current num neurons is "+str(self.N))
 				exit()
 
 			#--------------------
 			# Set the rows of the the network's ConnectWeights_gap matrix corresponding to the neurons
 			# to the given connectivity values, according to the input type (excitatory/inhibitory).
 			#--------------------
-			self.ConnectionWeights_gap 	= gapConnectivityMatrix
+			self.connectionWeights_gap 	= gapConnectivity
 
 		return
 
 
-	def set_input_connectivity(self, connectivityMatrix, inputType='excitatory'):
+	def set_input_connectivity(self, connectivity, inputType='excitatory'):
 		#--------------------
 		# This method expects as input a IxN matrix representing the weighted mapping of I input signals to N network neurons.
 		#--------------------
 
-		inputConnectivityMatrix	= connectivityMatrix
+		inputConnectivity	= connectivity
 		# Check that the weight matrix provided is in the correct form, and convert the matrix to a numpy.ndarray type:
 		try:
-			if(not isinstance(inputConnectivityMatrix, numpy.ndarray)):
-				inputConnectivityMatrix	= numpy.array(inputConnectivityMatrix)
-			if(inputConnectivityMatrix.ndim != 2):
+			if(not isinstance(inputConnectivity, numpy.ndarray)):
+				inputConnectivity	= numpy.array(inputConnectivity)
+			if(inputConnectivity.ndim != 2):
 				raise ValueError
 		except:
 			print("(NeuronNetwork) Error: The method set_input_connectivity expects 2D numeric weight matrix as its argument (list-of-lists or numpy.ndarray)")
 			exit()
 
 		# Check that the dimension of the weight matrix provided matches the number of neurons in the network:
-		if(inputConnectivityMatrix.shape[1] != self.N):
-			print("(NeuronNetwork) Error: The method set_input_connectivity expects IxN weight matrix as its argument, where N = num neurons in network. The given matrix has dimensions I="+str(inputConnectivityMatrix.shape[1])+"xN="+str(inputConnectivityMatrix.shape[0])+", but the current num neurons is "+str(self.N))
+		if(inputConnectivity.shape[1] != self.N):
+			print("(NeuronNetwork) Error: The method set_input_connectivity expects IxN weight matrix as its argument, where N = num neurons in network. The given matrix has dimensions I="+str(inputConnectivity.shape[1])+"xN="+str(inputConnectivity.shape[0])+", but the current num neurons is "+str(self.N))
 			exit()
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -262,9 +264,9 @@ class NeuronNetwork(object):
 		# according to the input type (excitatory/inhibitory).
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		if(inputType.lower() == 'excitatory' or inputType.lower() == 'e'):
-			self.ConnectionWeights_inpExcit 	= inputConnectivityMatrix
+			self.connectionWeights_inpExcit 	= inputConnectivity
 		elif(inputType.lower() == 'inhibitory' or inputType.lower() == 'i'):
-			self.ConnectionWeights_inpInhib		= inputConnectivityMatrix
+			self.connectionWeights_inpInhib		= inputConnectivity
 		else:
 			print("(NeuronNetwork) Error: The method set_input_connectivity expects inputType to be specified as ['excitatory'|'e'] or ['inhibitory'|'i'])")
 			exit()
@@ -288,7 +290,7 @@ class NeuronNetwork(object):
 		"""  """
 		pass
 
-	
+
 	def initialize_simulation(self, T_max=None, deltaT=None, integrationMethod=None):
 		#~~~~~
 		# For any parameter values given in the call to initializeSimulation, set the network attributes accordingly.
