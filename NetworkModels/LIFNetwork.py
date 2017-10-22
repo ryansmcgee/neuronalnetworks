@@ -81,7 +81,7 @@ class LIFNetwork(NeuronNetwork):
 		for variable in self.neuronLogVariables:
 			self.neuronLogs[variable]	= {'data': None, 'enabled': True}	# The data data structure will be initialized in initialize_simulation() when numTimePoints is known.
 
-		self.inputLogVariables = ['input_id', 't', 'input_val', 'input_type', 'label']
+		self.inputLogVariables = ['input_id', 't', 'input_val', 'label']
 		for variable in self.inputLogVariables:
 			self.inputLogs[variable]	= {'data': None, 'enabled': True}	# The data data structure will be initialized in initialize_simulation() when numTimePoints is known.
 
@@ -133,6 +133,8 @@ class LIFNetwork(NeuronNetwork):
 		# (initialize all connections for newly added neurons to 0 weight)
 		#--------------------
 		Wts_temp	= numpy.zeros(shape=(self.N, self.N))
+		print Wts_temp.shape
+		print self.connectionWeights_synExcit.shape
 		Wts_temp[:(self.N-numNeuronsToAdd), :(self.N-numNeuronsToAdd)] = self.connectionWeights_synExcit
 		self.connectionWeights_synExcit = Wts_temp
 
@@ -143,6 +145,10 @@ class LIFNetwork(NeuronNetwork):
 		Wts_temp	= numpy.zeros(shape=(self.N, self.N))
 		Wts_temp[:(self.N-numNeuronsToAdd), :(self.N-numNeuronsToAdd)] = self.connectionWeights_gap
 		self.connectionWeights_gap = Wts_temp
+
+		Wts_temp	= numpy.zeros(shape=(self.numInputs, self.N))
+		Wts_temp[:(self.numInputs), :(self.N-numNeuronsToAdd)] = self.connectionWeights_inputs
+		self.connectionWeights_inputs = Wts_temp
 
 		#--------------------
 		# If the simulation has already been initialized (i.e. variable logs already initialized,
@@ -162,9 +168,15 @@ class LIFNetwork(NeuronNetwork):
 
 		return
 
-	def add_inputs(self, numInputsToAdd, inputType='excitatory'):
+	def add_inputs(self, numInputsToAdd, label=''):
 
-		self.inputVals 	= numpy.concatenate([self.inputVals, [0.0 for n in range(numInputsToAdd)]])
+		#--------------------
+		# Add the given metadata for this set of input(s) to the network's input parameter vectors:
+		#--------------------
+		self.inputVals 		= numpy.concatenate([self.inputVals, [0.0 for n in range(numInputsToAdd)]])
+
+		self.inputIDs		= numpy.concatenate([self.inputIDs, [self.numInputs+i for i in range(numInputsToAdd)]]) # Assign new IDs before incrementing self.numInputs
+		self.inputLabels	= numpy.concatenate([self.inputLabels, [label for i in range(numInputsToAdd)]])
 
 		#--------------------
 		# Increment the count of total inputs in the network:
@@ -175,13 +187,11 @@ class LIFNetwork(NeuronNetwork):
 		# Expand the connectivity matrices to accomodate the added nuerons.
 		# (initialize all connections for newly added inputs to 0 weight)
 		#--------------------
-		Wts_temp	= numpy.zeros(shape=(self.numInputs, self.numNeurons))
-		Wts_temp[:(self.N-numInputsToAdd), :(self.N)] = self.connectionWeights_inpExcit
-		self.connectionWeights_inpExcit = Wts_temp
-
-		Wts_temp	= numpy.zeros(shape=(self.numInputs, self.numNeurons))
-		Wts_temp[:(self.N-numInputsToAdd), :(self.N)] = self.connectionWeights_inpInhib
-		self.connectionWeights_inpInhib = Wts_temp
+		Wts_temp	= numpy.zeros(shape=(self.numInputs, self.N))
+		print Wts_temp.shape
+		print self.connectionWeights_inputs.shape
+		Wts_temp[:(self.numInputs-numInputsToAdd), :(self.N)] = self.connectionWeights_inputs
+		self.connectionWeights_inputs = Wts_temp
 
 		#--------------------
 		# If the simulation has already been initialized (i.e. variable logs already initialized,
@@ -195,56 +205,72 @@ class LIFNetwork(NeuronNetwork):
 		return
 
 
+	def set_input_vals(self, vals, inputIDs=None):
+		if(inputIDs is not None):
+			self.inputVals = numpy.asarray(vals)
+		else:
+			self.inputVals[inputIDs] = vals
+
+
 
 	def log_current_variable_values(self):
 		#~~~~~~~~~~~~~~~~~~~~
 		# Log the current values of variables for which logging is enabled:
 		#~~~~~~~~~~~~~~~~~~~~
+		# print self.neuronLogs
+		# print self.neuronIDs
 		for n in range(self.N):
 			if(self.neuronLogs['neuron_id']['enabled']):
-				self.neuronLogs['neuron_id'][n][self.timeStepIndex]	= self.neuronIDs[n]
+				self.neuronLogs['neuron_id']['data'][n][self.timeStepIndex]	= self.neuronIDs[n]
 			if(self.neuronLogs['t']['enabled']):
-				self.neuronLogs['t'][n][self.timeStepIndex]	= self.T
+				self.neuronLogs['t']['data'][n][self.timeStepIndex]	= self.t
 			if(self.neuronLogs['spike']['enabled']):
-				self.neuronLogs['spike'][n][self.timeStepIndex]	= self.spikeEvents[n]
+				self.neuronLogs['spike']['data'][n][self.timeStepIndex]	= self.spikeEvents[n]
 			if(self.neuronLogs['V']['enabled']):
-				self.neuronLogs['V'][n][self.timeStepIndex]	= self.V[n]
+				self.neuronLogs['V']['data'][n][self.timeStepIndex]	= self.V[n]
 			if(self.neuronLogs['g_leak']['enabled']):
-				self.neuronLogs['g_leak'][n][self.timeStepIndex]	= self.g_leak[n]
+				self.neuronLogs['g_leak']['data'][n][self.timeStepIndex]	= self.g_leak[n]
 			if(self.neuronLogs['g_excit']['enabled']):
-				self.neuronLogs['g_excit'][n][self.timeStepIndex]	= self.g_excit[n]
+				self.neuronLogs['g_excit']['data'][n][self.timeStepIndex]	= self.g_excit[n]
 			if(self.neuronLogs['g_inhib']['enabled']):
-				self.neuronLogs['g_inhib'][n][self.timeStepIndex]	= self.g_inhib[n]
+				self.neuronLogs['g_inhib']['data'][n][self.timeStepIndex]	= self.g_inhib[n]
 			if(self.neuronLogs['g_gap']['enabled']):
-				self.neuronLogs['g_gap'][n][self.timeStepIndex]	= self.g_gap[n]
+				self.neuronLogs['g_gap']['data'][n][self.timeStepIndex]	= self.g_gap[n]
 			if(self.neuronLogs['synapse_type']['enabled']):
-				self.neuronLogs['synapse_type'][n][self.timeStepIndex]	= self.neuronSynapseTypes[n]
+				self.neuronLogs['synapse_type']['data'][n][self.timeStepIndex]	= self.neuronSynapseTypes[n]
 			if(self.neuronLogs['label']['enabled']):
-				self.neuronLogs['label'][n][self.timeStepIndex]	= self.neuronLabels[n]
+				self.neuronLogs['label']['data'][n][self.timeStepIndex]	= self.neuronLabels[n]
 
+
+		print self.inputLogs
 		for i in range(self.numInputs):
 			if(self.inputLogs['input_id']['enabled']):
-				self.inputLogs['input_id'][n][self.timeStepIndex]	= self.inputIDs[n]
+				print "?????????????"
+				print i
+				print self.timeStepIndex
+				print self.inputIDs
+				print self.inputLogs['input_id']
+				print self.inputLogs['input_id']['data']
+				print self.inputLogs['input_id']['data'][i]
+				print self.inputLogs['input_id']['data'][i][self.timeStepIndex]
+				self.inputLogs['input_id']['data'][i][self.timeStepIndex]	= self.inputIDs[i]
 			if(self.inputLogs['t']['enabled']):
-				self.inputLogs['t'][n][self.timeStepIndex]	= self.T
-			if(self.inputLogs['inpput_val']['enabled']):
-				self.inputLogs['input_val'][n][self.timeStepIndex]	= self.inputVals[n]
-			if(self.inputLogs['inpput_type']['enabled']):
-				self.inputLogs['input_type'][n][self.timeStepIndex]	= self.inputTypes[n]
+				self.inputLogs['t']['data'][i][self.timeStepIndex]	= self.t
+			if(self.inputLogs['input_val']['enabled']):
+				self.inputLogs['input_val']['data'][i][self.timeStepIndex]	= self.inputVals[i]
 			if(self.inputLogs['label']['enabled']):
-				self.inputLogs['label'][n][self.timeStepIndex]	= self.inputLabels[n]
+				self.inputLogs['label']['data'][i][self.timeStepIndex]	= self.inputLabels[i]
 
 		return
 
 
 	def initialize_simulation(self, T_max=None, deltaT=None, integrationMethod=None):
 		# Call the standard network simulation initialization:
-		NeuronNetwork.initialize_simulation(T_max, deltaT, integrationMethod)
+		super(self.__class__, self).initialize_simulation(T_max, deltaT, integrationMethod)
 
 		########################################
 		# LIFNetwork-specific initializations: #
 		########################################
-
 		#~~~~~~~~~~~~~~~~~~~~
 		# Pre-calculate numerical integration constants according to the given integration method:
 		#~~~~~~~~~~~~~~~~~~~~
@@ -256,17 +282,12 @@ class LIFNetwork(NeuronNetwork):
 			self.constBeta_g_excit	= self.deltaT/self.tau_g_excit
 			self.constAlpha_g_inhib	= 1.0 - self.deltaT/self.tau_g_inhib
 			self.constBeta_g_inhib	= self.deltaT/self.tau_g_inhib
-
-
 		elif(self.integrationMethod == 'trapezoid' or self.integrationMethod == 'trapezoidal'):
 			pass
-
 		elif(self.integrationMethod == 'rk2'):
 			pass
-
 		elif(self.integrationMethod == 'rk4'):
 			pass
-
 		else:
 			print("The given integration method, \'"+self.integrationMethod+"\' is not recognized. Forward euler integration will be used by default.")
 
@@ -282,13 +303,14 @@ class LIFNetwork(NeuronNetwork):
 		# No need to have if statements for integration method because we're putting all update rules in the same form (g(t+1) = alpha*g(t) + beta*Ws)
 		# where the only difference between the integration methods are the values of constants alpha and beta,
 		# which are pre-calculated at network initialization according to integration method
-		synpaseInducedConductanceChange_excit 	= self.connectionWeights_synExcit.T.dot(self.spikeEvents*self.diracDeltaValue())
-		synpaseInducedConductanceChange_inhib 	= self.connectionWeights_synInhib.T.dot(self.spikeEvents*self.diracDeltaValue())
-		inputInducedConductanceChange_excit 	= self.connectionWeights_inpExcit.T.dot(self.inputValues_excit) if self.numInputs_excit() > 0 else numpy.zeros(self.N)
-		inputInducedConductanceChange_inhib 	= self.connectionWeights_inpInhib.T.dot(self.inputValues_inhib) if self.numInputs_inhib() > 0 else numpy.zeros(self.N)
+		synpaseInducedConductanceChange_excit 	= self.connectionWeights_synExcit.T.dot(self.spikeEvents*self.dirac_delta())
+		synpaseInducedConductanceChange_inhib 	= self.connectionWeights_synInhib.T.dot(self.spikeEvents*self.dirac_delta())
+		# Removed spike-style input induced conductance change in favor of direct current-style inputs
+		# inputInducedConductanceChange_excit 	= self.connectionWeights_inpExcit.T.dot(self.inputValues_excit) if self.numInputs > 0 else numpy.zeros(self.N)
+		# inputInducedConductanceChange_inhib 	= self.connectionWeights_inpInhib.T.dot(self.inputValues_inhib) if self.numInputs > 0 else numpy.zeros(self.N)
 
-		self.g_excit 	= self.constAlpha_g_excit*self.g_excit + self.constBeta_g_excit*(synpaseInducedConductanceChange_excit  + inputInducedConductanceChange_excit)
-		self.g_inhib 	= self.constAlpha_g_inhib*self.g_inhib + self.constBeta_g_inhib*(synpaseInducedConductanceChange_inhib  + inputInducedConductanceChange_inhib)
+		self.g_excit 	= self.constAlpha_g_excit*self.g_excit + self.constBeta_g_excit*(synpaseInducedConductanceChange_excit)  # + inputInducedConductanceChange_excit)
+		self.g_inhib 	= self.constAlpha_g_inhib*self.g_inhib + self.constBeta_g_inhib*(synpaseInducedConductanceChange_inhib)  # + inputInducedConductanceChange_inhib)
 
 		#******************
 		# Update Voltages *
@@ -303,10 +325,20 @@ class LIFNetwork(NeuronNetwork):
 
 		if(self.integrationMethod == 'euler' or self.integrationMethod == 'forwardeuler' or self.integrationMethod == 'rk1'):
 
+			# self.V 	= R_dt*( ((1/R_dt)-(self.g_leak + self.g_excit + self.g_inhib + self.g_gap*self.connectionWeights_gap.sum(axis=0)))*self.V
+			# 			+ self.g_leak*self.V_eqLeak + self.g_excit*self.V_eqExcit + self.g_inhib*self.V_eqInhib + self.g_gap*self.connectionWeights_gap.T.dot(self.V)
+			# 			#+ (self.connectionWeights_inpExcit.T.dot(self.inputValues_excit) if self.numInputs_excit() > 0 else numpy.zeros(self.N)	)
+			# 			) #[incomplete edit 13sept17] 
+
+			# print self.inputVals
+			# print self.connectionWeights_inputs
+			# print self.inputVals.dot(self.connectionWeights_inputs)
+			# exit()
+
 			self.V 	= R_dt*( ((1/R_dt)-(self.g_leak + self.g_excit + self.g_inhib + self.g_gap*self.connectionWeights_gap.sum(axis=0)))*self.V
-						+ self.g_leak*self.V_eqLeak + self.g_excit*self.V_eqExcit + self.g_inhib*self.V_eqInhib + self.g_gap*self.connectionWeights_gap.T.dot(self.V)
-						#+ (self.connectionWeights_inpExcit.T.dot(self.inputValues_excit) if self.numInputs_excit() > 0 else numpy.zeros(self.N)	)
-						) #[incomplete edit 13sept17]
+							+ self.g_leak*self.V_eqLeak + self.g_excit*self.V_eqExcit + self.g_inhib*self.V_eqInhib + self.g_gap*self.connectionWeights_gap.T.dot(self.V) 
+							+ self.inputVals.dot(self.connectionWeights_inputs)
+							) 
 
 		elif(self.integrationMethod == 'trapezoid' or self.integrationMethod == 'trapezoidal'):
 			pass
@@ -345,5 +377,27 @@ class LIFNetwork(NeuronNetwork):
 			else:
 				self.spikeEvents[n]		= 0
 				self.timeSinceSpike[n]	+= self.deltaT
+
+
+	def get_spike_times(self):
+		df 	= self.get_neurons_dataframe()
+
+		spikeTimes	= []
+		for n in range(self.N):
+			spikeTimes.append( df.loc[((df['neuron_id'] == n) & (df['spike'] == 1)), 't'].values )
+
+		return spikeTimes
+
+
+	def get_neuron_ids(self, synapseTypes=None, labels=None):
+		if(synapseTypes is None):
+			synapseTypes	= numpy.unique(self.neuronSynapseTypes)
+		if(labels is None):
+			labels 			= numpy.unique(self.neuronLabels)
+
+		indices_selectedSynTypes	= numpy.in1d(self.neuronSynapseTypes, synapseTypes)
+		indices_selectedLabels		= numpy.in1d(self.neuronLabels, labels)
+
+		return numpy.where(indices_selectedSynTypes * indices_selectedLabels)[0]
 
 

@@ -13,15 +13,15 @@ class NeuronNetwork(object):
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		# Network Simulation Variables: ~
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		self.deltaT 			= 1000	# Initialized to default value
-		self.T_max 				= 0.01	# Initialized to default value
+		self.deltaT 			= 0.01	# Initialized to default value
+		self.T_max 				= 1000	# Initialized to default value
 
 		self.t 					= 0
 		self.timeStepIndex 		= 0
 		self.timeSeries 		= None 	# Initialized in initialze_simulation()
 		self.numTimeSteps		= 0 	# Initialized in initialze_simulation()
 
-		self.integrationMethod	= 'trapezoidal'	# <- Default value specified
+		self.integrationMethod	= 'euler'	# <- Default value specified
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		# Total number of nuerons in the network: ~
@@ -56,7 +56,6 @@ class NeuronNetwork(object):
 		# Input metadata: ~
 		#~~~~~~~~~~~~~~~~~~
 		self.inputIDs 			= numpy.empty(shape=[0])
-		self.inputTypes			= numpy.empty(shape=[0])
 		self.inputLabels		= numpy.empty(shape=[0])
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,8 +66,7 @@ class NeuronNetwork(object):
 		self.connectionWeights_synExcit	= numpy.empty(shape=[0, 0])
 		self.connectionWeights_synInhib	= numpy.empty(shape=[0, 0])
 		self.connectionWeights_gap		= numpy.empty(shape=[0, 0])
-		self.connectionWeights_inpExcit	= numpy.empty(shape=[0, 0])
-		self.connectionWeights_inpInhib	= numpy.empty(shape=[0, 0])
+		self.connectionWeights_inputs	= numpy.empty(shape=[0, 0])
 
 		#~~~~~~~~~~~~~~~~~~~
 		# Network Geometry ~
@@ -97,6 +95,11 @@ class NeuronNetwork(object):
 
 	@abstractmethod
 	def add_inputs(self):
+		"""  """
+		pass
+
+	@abstractmethod
+	def set_input_vals(self):
 		"""  """
 		pass
 
@@ -238,7 +241,7 @@ class NeuronNetwork(object):
 		return
 
 
-	def set_input_connectivity(self, connectivity, inputType='excitatory'):
+	def set_input_connectivity(self, connectivity):
 		#--------------------
 		# This method expects as input a IxN matrix representing the weighted mapping of I input signals to N network neurons.
 		#--------------------
@@ -260,23 +263,9 @@ class NeuronNetwork(object):
 			exit()
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# Set the network's ConnectWeights_inpExcit or ConnectWeights_inp to the given connectivity matrix,
-		# according to the input type (excitatory/inhibitory).
+		# Set the network's ConnectWeights_inputs to the given connectivity matrix:
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		if(inputType.lower() == 'excitatory' or inputType.lower() == 'e'):
-			self.connectionWeights_inpExcit 	= inputConnectivity
-		elif(inputType.lower() == 'inhibitory' or inputType.lower() == 'i'):
-			self.connectionWeights_inpInhib		= inputConnectivity
-		else:
-			print("(NeuronNetwork) Error: The method set_input_connectivity expects inputType to be specified as ['excitatory'|'e'] or ['inhibitory'|'i'])")
-			exit()
-
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# (Re)initialize the inputValues vectors to have lengths matching the newly specified number of inputs
-		# (if the number of inputs isn't changed by the new connectivity, inputValues are reset to 0 anyways)
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		self.inputValues_excit	= numpy.zeros(self.numInputs)
-		self.inputValues_inhib	= numpy.zeros(self.numInputs)
+		self.connectionWeights_inputs = inputConnectivity
 
 		return
 
@@ -311,8 +300,16 @@ class NeuronNetwork(object):
 		self.timeStepIndex 		= 0
 		self.t 					= 0
 
+
 		for variable in self.neuronLogVariables:
 			self.neuronLogs[variable]['data'] = [[numpy.nan for t in range(self.numTimeSteps)] for n in range(self.N)]
+		# 	print self.neuronLogs
+		# print self.T_max
+		# print self.deltaT
+		# print self.timeSeries
+		# print self.numTimeSteps
+		# print [[numpy.nan for t in range(self.numTimeSteps)] for n in range(self.N)]
+		# exit()
 
 		for variable in self.inputLogVariables:
 			self.inputLogs[variable]['data'] = [[numpy.nan for t in range(self.numTimeSteps)] for n in range(self.numInputs)]
@@ -339,6 +336,8 @@ class NeuronNetwork(object):
 		#	(perhaps the default values that were set for these attributes in the constructor)
 		# Else, continue with the simulation step under the existing initialization.
 		#--------------------
+		print self
+
 		if(not self.simulationInitialized):
 			self.initialize_simulation()
 
@@ -407,11 +406,12 @@ class NeuronNetwork(object):
 
 
 	def get_neurons_dataframe(self):
-		neuronsDataFrame	= pandas.DataFrame( columns=list(self.neuronLogs.keys()) )
+		loggedVariables		= list(self.neuronLogs.keys())
+		neuronsDataFrame	= pandas.DataFrame( columns=loggedVariables )
 		for n, nID in enumerate(self.neuronIDs):
 			neuronData	= []
-			for variable, data in enumerate(self.neuronLogs):
-				neuronData.append( (variable, data) )
+			for variable in loggedVariables:
+				neuronData.append( (variable, self.neuronLogs[variable]['data'][n]) )
 
 			neuronsDataFrame	= pandas.concat([ neuronsDataFrame, pandas.DataFrame.from_items(neuronData) ])
 
@@ -419,11 +419,12 @@ class NeuronNetwork(object):
 
 
 	def get_inputs_dataframe(self):
-		inputsDataFrame	= pandas.DataFrame( columns=list(self.inputLogs.keys()) )
-		for n, nID in enumerate(self.inputIDs):
+		loggedVariables	= list(self.inputLogs.keys())
+		inputsDataFrame	= pandas.DataFrame( columns=loggedVariables )
+		for i, iID in enumerate(self.inputIDs):
 			inputData	= []
-			for variable, data in enumerate(self.inputLogs):
-				inputData.append( (variable, data) )
+			for variable in loggedVariables:
+				inputData.append( (variable, self.inputLogs[variable]['data'][i]) )
 
 			inputsDataFrame	= pandas.concat([ inputsDataFrame, pandas.DataFrame.from_items(inputData) ])
 
