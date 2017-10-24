@@ -1,0 +1,1434 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"axesB",
+				"axesBorderColor"
+			],
+			[
+				"neuronR",
+				"neuronsSpikeRates"
+			],
+			[
+				"rate",
+				"rate_cmap"
+			],
+			[
+				"neuronrate",
+				"neuronsSpikeRates"
+			],
+			[
+				"connweig",
+				"connectivityWeights"
+			],
+			[
+				"I",
+				"I_excit"
+			],
+			[
+				"neuron",
+				"neuronIDs"
+			],
+			[
+				"R_",
+				"R_membrane"
+			],
+			[
+				"g",
+				"g_e"
+			],
+			[
+				"syna",
+				"synpaseInducedConductanceChange_inhib"
+			],
+			[
+				"synap",
+				"synpaseInducedConductanceChange_excit"
+			],
+			[
+				"gapWt",
+				"gapWt_cmap"
+			],
+			[
+				"connec",
+				"connectionWeights_synInhib"
+			],
+			[
+				"connectionW",
+				"connectionWeights_gap"
+			],
+			[
+				"connecti",
+				"connectionWeights_inputs"
+			],
+			[
+				"gapW",
+				"gapWt_cmap"
+			],
+			[
+				"synW",
+				"synWt_cmap"
+			],
+			[
+				"m",
+				"matplotlib"
+			],
+			[
+				"surf",
+				"surfaceBorderColor"
+			],
+			[
+				"indices",
+				"indices_selectedSynTypes"
+			],
+			[
+				"syn",
+				"synapseTypes"
+			],
+			[
+				"indisel",
+				"indices_selectedSynTypes"
+			],
+			[
+				"max",
+				"max"
+			],
+			[
+				"orig",
+				"orig_cmap"
+			],
+			[
+				"postsy",
+				"postsynCoord"
+			],
+			[
+				"presyn",
+				"presynCoord"
+			],
+			[
+				"torr",
+				"torroidalDist_w"
+			],
+			[
+				"h",
+				"h"
+			],
+			[
+				"posts",
+				"postsynCoord"
+			],
+			[
+				"post",
+				"postsynCoord"
+			],
+			[
+				"toi",
+				"torroidalDist_w"
+			],
+			[
+				"surfa",
+				"surfaceBorderColor"
+			],
+			[
+				"seg2",
+				"seg2Startpt"
+			],
+			[
+				"edge",
+				"edgeIsTorroidal_h"
+			],
+			[
+				"ed",
+				"edgeIsTorroidal_w"
+			],
+			[
+				"connect",
+				"connectionWeights_synExcit"
+			],
+			[
+				"Netw",
+				"NetworkConnectivity"
+			],
+			[
+				"N",
+				"NeuronNetwork"
+			],
+			[
+				"Neuron",
+				"NeuronNetwork"
+			],
+			[
+				"neuronL",
+				"neuronLogs"
+			],
+			[
+				"dynam",
+				"dynamics_update"
+			],
+			[
+				"numinput",
+				"numInputs_excit"
+			],
+			[
+				"enablinpu",
+				"enableLog_inputValues_excit"
+			],
+			[
+				"numI",
+				"numInputs_excit"
+			],
+			[
+				"logs_inp",
+				"logs_inputValues_inhib"
+			],
+			[
+				"logs_input",
+				"logs_inputValues_excit"
+			],
+			[
+				"inputva",
+				"inputValues_excit"
+			],
+			[
+				"neurid",
+				"neuronIDs"
+			],
+			[
+				"label",
+				"neuronLabels"
+			],
+			[
+				"type",
+				"synapse_types"
+			],
+			[
+				"testN",
+				"testNetworkDataFrame"
+			],
+			[
+				"spikerate",
+				"neuronSpikeRates"
+			],
+			[
+				"neuronIDs_input",
+				"neuronIDs_inputInhib"
+			],
+			[
+				"nidsnonio",
+				"neuronIDs_nonIOExcit"
+			],
+			[
+				"neuronIDs_",
+				"neuronIDs_excit"
+			],
+			[
+				"nID",
+				"nID"
+			],
+			[
+				"cmapInp",
+				"cmapInp_alpha"
+			],
+			[
+				"Con",
+				"ConnectionWeights_inpInhib"
+			],
+			[
+				"Conn",
+				"ConnectionWeights_inpExcit"
+			],
+			[
+				"test",
+				"testNetwork"
+			],
+			[
+				"spi",
+				"spikeTimes"
+			],
+			[
+				"spike",
+				"spikeTimes"
+			],
+			[
+				"tight",
+				"tight_layout"
+			],
+			[
+				"simS",
+				"simsummaryFigure"
+			],
+			[
+				"neu",
+				"neuron_ids"
+			],
+			[
+				"gene",
+				"generateConnectivityVector"
+			],
+			[
+				"spar",
+				"sparsityMask"
+			],
+			[
+				"sp",
+				"sparsity"
+			],
+			[
+				"self",
+				"self_loops"
+			],
+			[
+				"conn",
+				"connectivityVector"
+			],
+			[
+				"spa",
+				"sparsityMask"
+			],
+			[
+				"weig",
+				"weightVector"
+			],
+			[
+				"wei",
+				"weightVector"
+			],
+			[
+				"ini",
+				"init_weight_dist"
+			],
+			[
+				"adj",
+				"adjacencyVector"
+			],
+			[
+				"con",
+				"connectivityVector"
+			],
+			[
+				"ax",
+				"ax"
+			],
+			[
+				"spik",
+				"spike_t"
+			],
+			[
+				"W",
+				"W_synI"
+			],
+			[
+				"ref",
+				"refracPeriod"
+			],
+			[
+				"V_",
+				"V_rest"
+			],
+			[
+				"delt",
+				"deltaT"
+			],
+			[
+				"R",
+				"R_membrane"
+			],
+			[
+				"neur",
+				"neuronDataSeries"
+			],
+			[
+				"t",
+				"testNetwork"
+			],
+			[
+				"titer",
+				"timeStepIter"
+			],
+			[
+				"synain",
+				"synpaseInducedConductanceChange_synExcit"
+			],
+			[
+				"inputs",
+				"inputValues_excit"
+			],
+			[
+				"time",
+				"timeStepIter"
+			],
+			[
+				"logs_",
+				"logs_spikeEvents"
+			],
+			[
+				"ena",
+				"enableLog_g_inhib"
+			],
+			[
+				"en",
+				"enableLog_inputs_excit"
+			],
+			[
+				"enab",
+				"enableLog_g_inhib"
+			],
+			[
+				"enableL",
+				"enableLog_g_excit"
+			],
+			[
+				"enable",
+				"enableLog_g_leak"
+			],
+			[
+				"enableLog",
+				"enableLog_voltage"
+			],
+			[
+				"del",
+				"deltaT"
+			],
+			[
+				"update",
+				"update_neurons"
+			],
+			[
+				"W_",
+				"W_synE"
+			],
+			[
+				"tau_",
+				"tau_g_gap"
+			],
+			[
+				"V",
+				"v"
+			],
+			[
+				"input",
+				"inputValues_excit"
+			],
+			[
+				"num",
+				"numInputs_excit"
+			],
+			[
+				"G",
+				"g_leak"
+			],
+			[
+				"B",
+				"B"
+			],
+			[
+				"tau",
+				"tau_g_synInhib"
+			],
+			[
+				"tau_g",
+				"tau_g_synExcit"
+			],
+			[
+				"vol",
+				"voltageLogs"
+			],
+			[
+				"None",
+				"None"
+			],
+			[
+				"integr",
+				"integrationMethod"
+			],
+			[
+				"exter",
+				"externalInputValues"
+			],
+			[
+				"int",
+				"integrationMethod"
+			],
+			[
+				"anal",
+				"analysisData"
+			],
+			[
+				"maxgrowthratemin",
+				"meanMaxGrowthRate_ODperMin"
+			],
+			[
+				"maxgrowth",
+				"maxGrowthTimeIntervals_mins"
+			],
+			[
+				"maxmin",
+				"maxGrowthRates_ODperMin"
+			],
+			[
+				"meanmins",
+				"meanMaxGrowthTimeInterval_mins"
+			],
+			[
+				"meanmax",
+				"meanMaxGrowthRate_ODperMin"
+			],
+			[
+				"maxgrow",
+				"maxGrowthTimeIntervals_mins"
+			],
+			[
+				"maxgrmin",
+				"maxGrowthRates_ODperMin"
+			],
+			[
+				"mean",
+				"meanMaxGrowthTimeInterval_secs"
+			],
+			[
+				"meanMax",
+				"meanMaxGrowthTimeInterval_secs"
+			],
+			[
+				"ana",
+				"analysisData"
+			],
+			[
+				"maxG",
+				"maxGrowthTimeInterval_secs"
+			],
+			[
+				"maxGro",
+				"maxGrowthTimeIntervals_secs"
+			],
+			[
+				"maxGr",
+				"maxGrowthRate_ODperSec"
+			],
+			[
+				"specD",
+				"specData"
+			],
+			[
+				"plate",
+				"platedatafiles"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "demo_LIFNetwork.py",
+			"settings":
+			{
+				"buffer_size": 37170,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "debugging.txt",
+			"settings":
+			{
+				"buffer_size": 7877343,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NetworkModels/LIFNetwork.py",
+			"settings":
+			{
+				"buffer_size": 20511,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NetworkVisualization/NetworkPlots.py",
+			"settings":
+			{
+				"buffer_size": 70423,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NetworkVisualization/OverviewFigures.py",
+			"settings":
+			{
+				"buffer_size": 6076,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NetworkModels/NeuronNetwork.py",
+			"settings":
+			{
+				"buffer_size": 19923,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NetworkGeometry/CylinderSurface.py",
+			"settings":
+			{
+				"buffer_size": 13817,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NetworkConnectivity/NetworkConnectivity.py",
+			"settings":
+			{
+				"buffer_size": 11790,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"NeuronNetworkProj",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"NeuronNetworkProj",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Run with args",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Run with args",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 359.0,
+		"history":
+		[
+			"pwd"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/ryan/neuronal-networks",
+		"/home/ryan/neuronal-networks/NetworkConnectivity",
+		"/home/ryan/neuronal-networks/NetworkGeometry",
+		"/home/ryan/neuronal-networks/NetworkInput",
+		"/home/ryan/neuronal-networks/NetworkModels",
+		"/home/ryan/neuronal-networks/NetworkVisualization"
+	],
+	"file_history":
+	[
+		"/home/ryan/neuronal-networks/_____.png",
+		"/home/ryan/neuronal-networks/NetworkVisualization/VizUtility.py",
+		"/home/ryan/neuronal-networks/MidpointNormalize.py",
+		"/home/ryan/neuronal-networks/NetworkConnectivity/NetworkConnectivity.py",
+		"/home/ryan/neuronal-networks/NetworkGeometry/CubeVolume.py",
+		"/media/ryan/DATA_MAIN/Projects/hydra/neuron_networks/NetworkGeometry.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/__init__.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkConnectivities/__init__.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/demo_LIFNetwork.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkModels/LIFNetwork.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/AnnulusVolume.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkConnectivities/NetworkConnectivity.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/CylinderSurface.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/TorusSurface.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/SpheroidSurface.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/CubeVolume.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/CylinderVolume.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/TorusVolume.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/EllipsoidVolume.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometries/PlaneSurface.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NeuronNetworkFHN.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NeuronNetwork.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NeuronNetworkLIF.py",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NeuronNetworkRate",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NetworkGeometry",
+		"/media/ryan/DATA_MAIN/Projects/hydra/neuron_networks/NetworkGeometryPlane",
+		"/media/ryan/DATA_MAIN/Projects/neuronal-networks/NeuronNetworkIzhikevich.py",
+		"/media/ryan/DATA_MAIN/Projects/hydra/neuron_networks/NetworkConnectivity.py",
+		"/home/ryan/Projects/hydra/neuron_networks/NeuronNetwork.sublime-project",
+		"/home/ryan/Projects/hydra/neuron_networks/network_connectivity.py",
+		"/home/ryan/Projects/hydra/neuron_networks/network_geometry.py",
+		"/media/ryan/DATA_MAIN/Projects/hydra/neuron-dynamnic-models/NetworkConnectivity.py",
+		"/home/ryan/.config/sublime-text-3/Packages/User/SublimeLinter.sublime-settings",
+		"/media/ryan/DATA_MAIN/Projects/hydra/neuron-dynamnic-models/LIFNeuron.py",
+		"/home/ryan/.pylintrc",
+		"/home/ryan/.config/sublime-text-3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/media/ryan/DATA_MAIN/Projects/dms/temp.py",
+		"/media/ryan/DATA_MAIN/Projects/dms/OpticalDensityData/BK26_RIF_and_AMP_growth_rate_assay_04APR17.txt",
+		"/media/ryan/DATA_MAIN/Projects/dms/OpticalDensityData/BK26_RIF_and_AMP_growth_rate_assay_04APR17__preprocessed.txt",
+		"/media/ryan/DATA_MAIN/Projects/dms/test.csv",
+		"/media/ryan/DATA_MAIN/Projects/dms/testan.csv",
+		"/media/ryan/DATA_MAIN/Projects/dms/OpticalDensityData/plateconfig_demo.cfg",
+		"/home/ryan/Projects/hydra-imaging/test.py",
+		"/home/ryan/Projects/journal-recommender/countUniqueClusterIDsByHierarchyLevel.py",
+		"/home/ryan/Projects/journal-recommender/data/jstor_papers.txt",
+		"/home/ryan/Projects/journal-recommender/neighborhoodmethod_withTitleKeywords_groupingRareClusterIDs_loops.py",
+		"/home/ryan/Projects/COURSES/CSE546/hw4/q2-1_temp1.py",
+		"/media/ryan/DATA_MAIN/Projects/hydra-imaging/test.py",
+		"/home/ryan/Projects/journal-recommender/0000.py",
+		"/home/ryan/Projects/journal-recommender/0000temp.py",
+		"/home/ryan/Projects/journal-recommender/01.py",
+		"/home/ryan/Projects/journal-recommender/00.py",
+		"/home/ryan/Projects/journal-recommender/01results_dropPapersBeforeGivenYear.txt",
+		"/home/ryan/Projects/journal-recommender/01results_dropPapersExceptInGivenYear.txt",
+		"/home/ryan/Projects/journal-recommender/01results_papersPerJournal.txt",
+		"/home/ryan/Projects/journal-recommender/papers_citedJournals.txt",
+		"/home/ryan/Projects/COURSES/CSE546/hw3/5-2_clusterLabelCounts_k16.csv",
+		"/home/ryan/Projects/COURSES/CSE546/hw2/q2-1_submission.py",
+		"/home/ryan/Projects/COURSES/CSE546/hw2/q2-4.py",
+		"/home/ryan/Projects/COURSES/CSE546/hw2/q2-1.py",
+		"/home/ryan/Projects/COURSES/CSE546/hw2/q1-1-3.py",
+		"/home/ryan/Projects/genome-info-dms/Growth_assay_CTX_09NOV16_RSM__noheader.csv",
+		"/home/ryan/Projects/genome-info-dms/expmntphase1.py",
+		"/home/ryan/Projects/journal-recommender/data/generatePaperFeatureVectors.py",
+		"/home/ryan/Projects/COURSES/CSE546/hw2/1-2-1_v.csv",
+		"/home/ryan/Projects/COURSES/CSE546/hw2/2-3_loglossVSiters_minibatchsize1_maxiter120000_iterinterval10.csv",
+		"/home/ryan/Projects/COURSES/CSE546/hw2/2-3_loglossVSiters.csv",
+		"/home/ryan/Projects/COURSES/CSE546/hw1/q7-4.py",
+		"/home/ryan/Projects/COURSES/CSE546/hw1/7-4_plotting.py",
+		"/home/ryan/Projects/COURSES/CSE546/hw1/q6.py",
+		"/home/ryan/Projects/COURSES/CSE546/hw1/dummy.py",
+		"/home/ryan/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/ryan/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/ryan/Projects/COURSES/CSE546/hw1/mnist_loader.py",
+		"/home/ryan/Projects/COURSES/CSE546/hw1/overleaf_backup.tex",
+		"/home/ryan/Projects/COURSES/STAT509/hw1.py",
+		"/home/ryan/Projects/doi-lit-browser/data/jstor_treeb.json",
+		"/home/ryan/Projects/doi-lit-browser/data/createJstorTreeJSON.py",
+		"/home/ryan/Projects/doi-lit-browser/data/jstor_tree.json",
+		"/home/ryan/Projects/doi-lit-browser/css/tree.cs",
+		"/home/ryan/Projects/doi-lit-browser/CourseVersion/css/style.css",
+		"/home/ryan/Projects/doi-lit-browser/CourseVersion/index.html",
+		"/home/ryan/Projects/genome-info-dms/substLoadSim.py",
+		"/home/ryan/Projects/dean-phenowas/sim.py",
+		"/home/ryan/Projects/dean-phenowas/04_table_traitXmusline_relativeSE_traitCategory1.out",
+		"/home/ryan/Projects/dean-phenowas/04_muslineAverageRelativeSEs_10shuffleReplicates_traitCategory1.out",
+		"/home/ryan/Projects/dean-phenowas/04_muslineAverageRelativeSEs_10shuffleReplicates_traitCategory15.out",
+		"/home/ryan/Projects/dean-phenowas/04_muslineAverageRelativeSEs_10shuffleReplicates_traitCategory13.out",
+		"/home/ryan/Projects/dean-phenowas/04_muslineAverageRelativeSEs_10shuffleReplicates_traitCategory14.out",
+		"/home/ryan/Projects/dean-phenowas/00_bxd_pheno.txt",
+		"/home/ryan/Projects/dean-phenowas/00_bxd_phenotype_categories.txt",
+		"/home/ryan/Projects/dean-phenowas/04_preprocessed_traitcentric_data.out",
+		"/home/ryan/Projects/dean-phenowas/DataPreprocessor.py",
+		"/home/ryan/Projects/dean-phenowas/02__plot_RelativeSE_forAllIndividualTraitsAndMuslines.py",
+		"/home/ryan/Projects/dean-phenowas/03_muslineAverageRelativeSEs_3shuffleReplicates.out",
+		"/home/ryan/Projects/dean-phenowas/01_preprocessed_traitcentric_data.out",
+		"/home/ryan/Projects/dean-phenowas/01__plot_MEANvsSE_forAllIndividualTraitsAndMuslines.py",
+		"/home/ryan/Projects/dean-phenowas/02_preprocessed_traitcentric_data.out",
+		"/home/ryan/Projects/dean-phenowas/02_plots_muslineRelativeSE/BXD14.png",
+		"/home/ryan/Projects/dean-phenowas/01__plot_MEANvsSE_forAllMuslines.py",
+		"/home/ryan/Projects/dean-phenowas/01_plots_muslineMEANvsSE/BXD14.png",
+		"/home/ryan/Projects/dean-phenowas/00__test.py",
+		"/home/ryan/Projects/dean-phenowas/DataManagerPandas.py",
+		"/home/ryan/Projects/dean-phenowas/processed_traitcentric_data.out",
+		"/home/ryan/Projects/DeanPheno/figs_for_matt_7-20-16/notes",
+		"/home/ryan/Projects/dynamic-network-irps/sum_network.py",
+		"/home/ryan/Projects/EigenfactorTreeBrowser/src/doi_tree_backup.js",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/style/theme.css",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/src/slider.js",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/src/datamap.js",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/src/worldarea.js",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/src/countryarea.js",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/src/worldmap.js",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/newSketch.JPG",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/index_rsm.html",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/libs/bootstrap/css/theme.css",
+		"/home/ryan/Projects/Courses/CSE512/Assignment3/512a3/dat/fullSARS_8.json",
+		"/home/ryan/Projects/DeanPheno/00_bxd_pheno.txt"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"tight_",
+			"save",
+			"axesGridColor",
+			"axesPaneColor",
+			"edgesSyn",
+			"synapseWeights",
+			"set_bad",
+			"mask",
+			"edgeColor",
+			"edge_color",
+			"synWt",
+			"postsynCoord",
+			"presynCoord",
+			"synWt_cmap",
+			"synapseWeights",
+			"ax_raster",
+			"print",
+			"I_leak",
+			"enabled",
+			"Log",
+			"print",
+			"trace_ge",
+			"hmmm",
+			"neuronsIDs_traces",
+			"testNetworkNeuronsDataFrame",
+			"voltcond",
+			"T_max",
+			"[0]",
+			"!+",
+			"I_input",
+			"I_gap",
+			"I_inhib",
+			"I_excit",
+			"I_leak",
+			"dataframe.",
+			"dataframe",
+			"file",
+			"???",
+			"title",
+			"aspect",
+			"Weights'",
+			"'none'",
+			"axgapmat",
+			"cbar_matGap",
+			"img_matGap",
+			"cbar_matSyn",
+			"img_matSyn",
+			"ax_matSyn",
+			"connectionWeights_synExcitAndInhib",
+			"cmap",
+			"axsyn3d",
+			"edgesSyn",
+			"neuronSynWts",
+			"neuronSynEndpts",
+			"synWt_cmap",
+			"synapseWeights",
+			"=\"->\",",
+			"\"->\"",
+			"synWt",
+			"postsynCoord",
+			"presynCoord",
+			"pregapCoord",
+			"updateNeurons",
+			"axisPaneColor",
+			"surfaceBorderColor",
+			"surfaceBackgroundColor",
+			"0.98",
+			"max_range",
+			"x=",
+			"scatter",
+			"ax_netSyn",
+			"s=",
+			"print",
+			"'input'",
+			"zs",
+			"ys",
+			"xs",
+			"ax_netSyn",
+			"neuronIDs",
+			"generate_connectivity_vectors",
+			"pyplo",
+			"pyplot",
+			"synapseWt_cmap",
+			"edgeColor",
+			"randColor",
+			"plt.",
+			"np.",
+			"RdBu",
+			"np.",
+			"plt.",
+			"reenters on",
+			"\t\t\t\t\t\t\t# Configure edge segments to wrap across  boundary and then wrap around the TOP boundary:\n",
+			"network.h",
+			"network.w",
+			"w",
+			"borderColor",
+			"torroidalDelta",
+			"dist_h",
+			"ist",
+			"])",
+			"torroidalDimensions",
+			"self.surfacePlaneCoords",
+			"surfacePlaneCoords",
+			"intervalIsFull",
+			"self.dimensions",
+			"input_type",
+			"setInputConnectivity",
+			"args['W']",
+			"LIFNetwork Error",
+			"args['W']",
+			"setGapJunctionConnectivity",
+			"setSynapticConnectivity",
+			"LIFNetwork Error",
+			"update_neurons",
+			"connectivity",
+			"synapse_type",
+			"update_neurons",
+			"connectivity",
+			"[",
+			"ConnectionWeights",
+			"testNetworkDataFrame",
+			"dataframe",
+			"input",
+			"log",
+			"raster",
+			"enumerate",
+			"input",
+			"_cmap"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"'nearest'",
+			"0.99",
+			"ax",
+			"pyplot.",
+			"numpy.",
+			"pyplot.",
+			"reenters from",
+			"h",
+			"inputType",
+			"set_input_connectivity",
+			"(NeuronNetwork) Error",
+			"connectivityMatrix",
+			"set_gapJunction_connectivity",
+			"set_synaptic_connectivity",
+			"(NeuronNetwork) Error",
+			"updateNeurons",
+			"connectivityMatrix",
+			"synapseType",
+			"updateNeurons",
+			"connectivityMatrix",
+			"connectionWeights",
+			"testNetworkNeuronsDataFrame",
+			"ax_n_2",
+			"ax_n_1",
+			"Inp",
+			"cmapRdBu_midpt",
+			"cmapRdBu_max",
+			"cmapRdBu_min",
+			"Gainp",
+			"Gap",
+			"ax_matInp",
+			"ax_matGap",
+			"ax_matSyn",
+			"ax_raster",
+			"pyplot.",
+			"numpy.",
+			"pyplot.",
+			"self",
+			"network_connectivity",
+			"degree",
+			"connectivity",
+			"set",
+			"gap",
+			"connectivity",
+			"GapJunction",
+			"V_eqLeak",
+			"sales1",
+			"sales0",
+			"diracDeltaValue",
+			"t",
+			"testNetwork",
+			"timeStepIndex",
+			"inputInducedConductanceChange_inhib",
+			"inputInducedConductanceChange_excit",
+			"synpaseInducedConductanceChange_inhib",
+			"synpaseInducedConductanceChange_excit",
+			"g_inhib",
+			"g_excit",
+			"g_inhib",
+			"g_excit",
+			"update_neurons",
+			"simulationInitialized",
+			"initializeSimulation",
+			"for n in range(numNeur",
+			"maxGrowthTimeInterval_secs",
+			"datafiles",
+			"plotgroupby",
+			"groupplotlinesby",
+			"\t",
+			"\\t",
+			"H-",
+			"G-",
+			"F-",
+			"E-",
+			"D-",
+			"C-",
+			"B-",
+			"A-",
+			"Rif",
+			"sqReconstructionError",
+			"v",
+			"V",
+			"test",
+			"PapersPubjournals_train",
+			"PapersAttributes_train",
+			"PapersPubjournals",
+			"X_test_kdimfeatures",
+			"X_train_kdimfeatures",
+			"2-4",
+			"minibatch",
+			"y_train_classified_batch",
+			"X_train_batch",
+			"probNums",
+			"numpy.",
+			"pyplot",
+			"logloss_train",
+			"logLoss",
+			"y_",
+			"N_",
+			"X_",
+			"X",
+			"y_train_classified",
+			"X_train",
+			"N_train",
+			"regressionResults",
+			"bestLass",
+			"star",
+			"traindata.",
+			"handleNodeSelection",
+			"width",
+			"maxBlockWidthByDepth",
+			"median",
+			"04",
+			"muslinesWithRecordedValuesForTrait",
+			"traitmusline_data",
+			"self.traits_muslineData",
+			"MEAN",
+			"self.muslines_",
+			"self.traits_",
+			" \n'18",
+			" \n'17",
+			" \n'10",
+			" \n'11",
+			" \n'18",
+			" \n'12",
+			" \n'13",
+			" \n'14",
+			" \n'15"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "demo_LIFNetwork.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 37170,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								25316,
+								25316
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 7362.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "debugging.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7877343,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1051,
+								1051
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "NetworkModels/LIFNetwork.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20511,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "NetworkVisualization/NetworkPlots.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 70423,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								61704,
+								61704
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 14291.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "NetworkVisualization/OverviewFigures.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6076,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1300,
+								1300
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1125.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "NetworkModels/NeuronNetwork.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 19923,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15581,
+								15581
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4707.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "NetworkGeometry/CylinderSurface.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13817,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1671,
+								1671
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "NetworkConnectivity/NetworkConnectivity.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11790,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10205,
+								10205
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2712.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 260.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "neuronal-networks.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"newSketch.JPG"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 195.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

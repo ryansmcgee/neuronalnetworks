@@ -11,7 +11,7 @@ from matplotlib import pyplot as pyplot
 
 # from LIFNetwork import LIFNetwork
 # import NetworkConnectivity
-from NetworkVisualization.MidpointNormalize import MidpointNormalize
+# from NetworkVisualization.MidpointNormalize import MidpointNormalize
 
 from NetworkModels.LIFNetwork import LIFNetwork
 from NetworkGeometry.CylinderSurface import CylinderSurface
@@ -23,21 +23,31 @@ from NetworkVisualization.OverviewFigures import *
 
 import numpy as numpy
 
+numpy.random.seed(69000)
 
 network 	= LIFNetwork()
 
-network.geometry = CylinderSurface(r=1, h=3)
-# network.geometry = CylinderSurface(w=20, h=10)
+# network.geometry = CylinderSurface(r=1, h=3)
+network.geometry = CylinderSurface(w=10, h=10)
 
-N = 10	#numpy.random.randint(low=2, high=200)
+N_excit = 80	#numpy.random.randint(low=2, high=200)
+N_inhib = 20
 
-print N
 
-network.add_neurons(numNeuronsToAdd=N,
+network.add_neurons(numNeuronsToAdd=N_excit,
 					V_init=-68.0, V_thresh=-50.0, V_reset=-70.0, V_eqLeak=-68.0, V_eqExcit=0.0, V_eqInhib=-70.0, R_membrane=1.0,
 					g_leak=0.3, g_excit_init=0.0, g_inhib_init=0.0, g_gap=0.5,
 					tau_g_excit=2.0, tau_g_inhib=2.0, refracPeriod=3.0,
 					synapse_type='excitatory')
+
+network.add_neurons(numNeuronsToAdd=N_inhib,
+					V_init=-68.0, V_thresh=-50.0, V_reset=-70.0, V_eqLeak=-68.0, V_eqExcit=0.0, V_eqInhib=-70.0, R_membrane=1.0,
+					g_leak=0.3, g_excit_init=0.0, g_inhib_init=0.0, g_gap=0.5,
+					tau_g_excit=2.0, tau_g_inhib=2.0, refracPeriod=3.0,
+					synapse_type='inhibitory')
+
+neuronIDs_excit = numpy.where(network.neuronSynapseTypes == 'excitatory')[0]
+neuronIDs_inhib = numpy.where(network.neuronSynapseTypes == 'inhibitory')[0]
 
 network.geometry.position_neurons(positioning='even')
 
@@ -45,9 +55,9 @@ network.geometry.position_neurons(positioning='even')
 
 
 I = 3
-currentInput1 = ConstantInput(constVal=1170)
-currentInput2 = ConstantInput(constVal=0.69)
-currentInput3 = ConstantInput(constVal=0.117)
+currentInput1 = ConstantInput(constVal=50)
+currentInput2 = ConstantInput(constVal=0)
+currentInput3 = ConstantInput(constVal=0)
 
 network.add_inputs(numInputsToAdd=I)
 
@@ -58,87 +68,166 @@ for i in range(I):
 	for nID in inputs_neuronIDs[i]:
 		W_inp[i, nID] = 1.0
 		network.neuronLabels[nID] = 'input_'+str(i)
+		network.neuronLabels[nID+78] = 'output_'+str(i)
 network.set_input_connectivity(connectivity=W_inp)
 
-print network.connectionWeights_inputs
-print network.inputVals
+# print network.connectionWeights_inputs
+# print network.inputVals
 # exit()
 
 
 
-W_synE 	= generate_connectivity_matrix(	N=network.N, adjacencyScheme='distance_probability', initWeightScheme='constant',
+# W_synE 	= generate_connectivity_matrix(	N=network.N, adjacencyScheme='distance_probability', initWeightScheme='constant',
+# 										args={
+# 												'distances':network.geometry.distances,
+# 												'adj_prob_dist_fn':'exponential', 'p0_a':1.0, 'sigma_a':1.5,
+# 												'c_w':0.5
+# 											} )
+W_synE 	= generate_connectivity_vectors(neuronIDs=neuronIDs_excit, N=network.N, adjacencyScheme='nearest_neighbors', initWeightScheme='uniform',
 										args={
 												'distances':network.geometry.distances,
-												'adj_prob_dist_fn':'exponential', 'p0_a':1.0, 'sigma_a':1.5,
-												'c_w':0.5
-											} )
+												'k':4,
+												'low':0.0, 'high':1.0
+										} )
 
-print W_synE
+W_synI 	= generate_connectivity_vectors(neuronIDs=neuronIDs_inhib, N=network.N, adjacencyScheme='nearest_neighbors', initWeightScheme='uniform',
+										args={
+												'distances':network.geometry.distances,
+												'k':3,
+												'low':0.0, 'high':2.0
+										} )
 
-network.set_synaptic_connectivity(connectivity=W_synE, synapseType='e')
+W_synG 	= generate_connectivity_matrix(N=network.N, adjacencyScheme='nearest_neighbors', initWeightScheme='uniform',
+										args={
+												'distances':network.geometry.distances,
+												'k':3,
+												'low':0.0, 'high':0.1
+										} )
+
+
+network.set_synaptic_connectivity(connectivity=W_synE, synapseType='e', updateNeurons=neuronIDs_excit)
+network.set_synaptic_connectivity(connectivity=W_synI, synapseType='i', updateNeurons=neuronIDs_inhib)
+network.set_gapjunction_connectivity(connectivity=W_synG)
 
 # print network.geometry.distances
 
-print network.connectionWeights_synExcit
+# print network.connectionWeights_synExcit
 
 
 
 
-network.initialize_simulation(T_max=1, deltaT=0.01)
+network.initialize_simulation(T_max=1000, deltaT=0.1)
 
 
 # while(network.t < (network.T_max-(network.deltaT/2))):	# The right-hand-side of this conditional is what it is rather than just T_max to avoid numerical roundoff errors causing unexpected conditional outcomes
-while(network.t < network.T_max):
+while(network.sim_state_valid()):
 
 	network.set_input_vals( vals=[currentInput1.val(network.t), currentInput2.val(network.t), currentInput3.val(network.t)] )
 
-	print "t="+str(network.t)+" inputs="+str(network.inputVals)
+	# print "t="+str(network.t)+" inputs="+str(network.inputVals)
 
 	network.sim_step()
 
 	# break
 
+# network.get_neurons_dataframe().to_csv('debugging.txt', sep='\t')
+
+# exit()
+
 simNeuronsDataFrame	= network.get_neurons_dataframe()
-print simNeuronsDataFrame
+# print simNeuronsDataFrame
 
 simInputsDataFrame	= network.get_inputs_dataframe()
-print simInputsDataFrame
+# print simInputsDataFrame
 
-print network.get_spike_times()
-
-
-
-
-hmm = LIF_overview_figure(simNeuronsDataFrame)
-
-pyplot.show()
-
-exit()
+# print network.get_spike_times()
 
 
 
 
+# hmm = LIF_overview_figure(simNeuronsDataFrame)
 
-nID = 1
+# pyplot.show()
 
-f, ax = pyplot.subplots()
-
-x_series 	= simNeuronsDataFrame.loc[(simNeuronsDataFrame['neuron_id']==nID), 't'].values
-trace_V 	= {'data':simNeuronsDataFrame.loc[(simNeuronsDataFrame['neuron_id']==nID), 'V'].values, 'label':'V', 'color':'black', 'alpha':1.0, 'linestyle':'-'}
-trace_ge 	= {'data':simNeuronsDataFrame.loc[(simNeuronsDataFrame['neuron_id']==nID), 'g_excit'].values, 'label':'g_e', 'color':'blue', 'alpha':0.5, 'linestyle':':'}
-
-traces_plot(ax, x=x_series, y1_traces=[trace_V], y2_traces=[trace_ge], x_axis_label='t', y1_axis_label='Voltage', y2_axis_label='', y1_legend=False, y2_legend=False, fontsize=8, labelsize=6)
-
-print simNeuronsDataFrame.loc[(simNeuronsDataFrame['neuron_id']==nID), 'V'].values
-
-pyplot.show()
-
-#************************************
-#************************************
-#************************************
-#************************************
-#************************************
 # exit()
+
+
+
+
+
+
+
+
+
+
+
+# print simNeuronsDataFrame.loc[(simNeuronsDataFrame['neuron_id']==nID), 'V'].values
+
+
+
+# figrast, axrast = pyplot.subplots()
+
+# spike_raster_plot(axrast, network)
+
+# figtrace, axtrace = pyplot.subplots()
+
+# nID = 1
+# x_series 	= simNeuronsDataFrame.loc[(simNeuronsDataFrame['neuron_id']==nID), 't'].values
+# trace_V 	= {'data':simNeuronsDataFrame.loc[(simNeuronsDataFrame['neuron_id']==nID), 'V'].values, 'label':'V', 'color':'black', 'alpha':1.0, 'linestyle':'-'}
+# trace_ge 	= {'data':simNeuronsDataFrame.loc[(simNeuronsDataFrame['neuron_id']==nID), 'g_excit'].values, 'label':'g_e', 'color':'blue', 'alpha':0.5, 'linestyle':':'}
+# traces_plot(axtrace, x=x_series, y1_traces=[trace_V], y2_traces=[trace_ge], x_axis_label='t', y1_axis_label='Voltage', y2_axis_label='', y1_legend=False, y2_legend=False, fontsize=8, labelsize=6)
+
+# figsyn2d, axsyn2d = pyplot.subplots()
+
+# synapse_network_diagram_2d(axsyn2d, network)
+
+# figsyn3d, axsyn3d = pyplot.subplots()
+
+# synapse_network_diagram_3d(axsyn3d, network)
+
+# figgap2d, axgap2d = pyplot.subplots()
+
+# gapjunction_network_diagram_2d(axgap2d, network)
+
+# figgap3d, axgap3d = pyplot.subplots()
+
+# gapjunction_network_diagram_3d(axgap3d, network)
+
+# figsynmat, axsynmat = pyplot.subplots()
+
+# synapse_connectivity_matrix(axsynmat, network.connectionWeights_synExcit-network.connectionWeights_synInhib)
+# # synapse_connectivity_matrix(axsynmat, numpy.zeros(shape=(network.N, network.N)))
+
+# figgapmat, axgapmat = pyplot.subplots()
+
+# gapjunction_connectivity_matrix(axgapmat, network.connectionWeights_gap)
+# # gapjunction_connectivity_matrix(axgapmat, numpy.zeros(shape=(network.N, network.N)))
+
+# figinpmat, axinpmat = pyplot.subplots()
+
+# input_connectivity_matrix(axinpmat, network.connectionWeights_inputs)
+# # input_connectivity_matrix(axinpmat, numpy.zeros(shape=(network.N, network.N)))
+
+# figrate2d, axrate2d = pyplot.subplots()
+
+# rate_network_diagram_2d(axrate2d, network)
+
+
+
+# exit()
+
+LIF_network_overview_figure(network, synapseDiagram2D=True, gapjunctionDiagram2D=True, spikerateDiagram2D=True)
+
+# pyplot.savefig('_____.png', bbox_inches='tight')
+
+pyplot.show()
+
+#************************************
+#************************************
+#************************************
+#************************************
+#************************************
+exit()
 #************************************
 #************************************
 #************************************
@@ -471,7 +560,7 @@ for n in range(network.N):
 
 
 
-pyplot.savefig('_____.png', bbox_inches='tight')
+# pyplot.savefig('_____.png', bbox_inches='tight')
 
 pyplot.show()
 

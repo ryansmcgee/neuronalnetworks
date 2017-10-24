@@ -185,7 +185,7 @@ class NeuronNetwork(object):
 		return
 
 
-	def set_gapJunction_connectivity(self, connectivity, updateNeurons=None):
+	def set_gapjunction_connectivity(self, connectivity, updateNeurons=None):
 				# Check that the weight matrix provided is in the correct form, and convert the matrix to a numpy.ndarray type:
 		try:
 			gapConnectivity	= connectivity
@@ -336,14 +336,13 @@ class NeuronNetwork(object):
 		#	(perhaps the default values that were set for these attributes in the constructor)
 		# Else, continue with the simulation step under the existing initialization.
 		#--------------------
-		print self
 
 		if(not self.simulationInitialized):
 			self.initialize_simulation()
 
 		# Check that we are not going past the time T_max allocated in initializeSimulation:
-		if(self.t >= self.T_max):
-			print("(NeuronNetwork) Warning: The maximum simulation time has been reached. [t = "+str(self.t)+", T_max = "+str(self.T_max)+", deltaT = "+str(self.deltaT)+", max num timesteps = "+str(self.T_max/self.deltaT)+", current timestep num = " +str(self.timeStepIndex))
+		if(self.t >= self.T_max - self.deltaT*0.1): # Check that t is not within a small epsilon of being equal to T_max to avoid numerical imprecision messing up this check.
+			print("(NeuronNetwork): The maximum simulation time has been reached. [t = "+str(self.t)+", T_max = "+str(self.T_max)+", deltaT = "+str(self.deltaT)+", max num timesteps = "+str(self.T_max/self.deltaT)+", current timestep num = " +str(self.timeStepIndex))
 			return False
 
 		return True
@@ -393,14 +392,19 @@ class NeuronNetwork(object):
 		return True
 
 
-	def get_neuron_IDs(self, synapseTypes=None, labels=None):
+	def get_neuron_ids(self, synapseTypes=None, labels=None):
 		if(synapseTypes is None):
 			synapseTypes	= numpy.unique(self.neuronSynapseTypes)
 		if(labels is None):
 			labels 			= numpy.unique(self.neuronLabels)
 
-		indices_selectedSynTypes	= numpy.in1d(self.neuronSynapseTypes, synapseTypes)
-		indices_selectedLabels		= numpy.in1d(self.neuronLabels, labels)
+		# Old string equality, rather than string inclusion, version
+		# indices_selectedSynTypes	= numpy.in1d(self.neuronSynapseTypes, synapseTypes)
+		# indices_selectedLabels		= numpy.in1d(self.neuronLabels, labels)
+
+
+		indices_selectedSynTypes 	= numpy.asarray( [True if any((t in syntype and t!='') or (t==syntype=='') for t in synapseTypes) else False for syntype in self.neuronSynapseTypes] )
+		indices_selectedLabels 		= numpy.asarray( [True if any((l in label and l!='') or (l==label=='') for l in labels) else False for label in self.neuronLabels] )
 
 		return numpy.where(indices_selectedSynTypes * indices_selectedLabels)[0]
 

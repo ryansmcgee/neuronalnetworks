@@ -38,6 +38,9 @@ class CylinderSurface(NetworkGeometry):
 		# Local origin of the geometry coordinate system relative to the global coordinate system, defined in 3d cartesian coordinates:
 		self.origin 	= origin if (origin is not None) else numpy.zeros(3)
 
+		# Flags indicating the surface plane dimensions that have torroidal wrapping:
+		self.torroidal = [True, False]
+
 
 	def convert_to_parametric_coords(self, origCoords, origCoordType='cartesian'):
 
