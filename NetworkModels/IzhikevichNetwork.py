@@ -384,7 +384,7 @@ class IzhikevichNetwork(NeuronNetwork):
 				self.spikeEvents[n]		= 1
 				self.V[n]				= self.V_reset[n]
 				self.U[n]				= self.U[n] + self.d[n]
-				print str(n) + " spike @ " +str(self.t)
+				# print str(n) + " spike @ " +str(self.t)
 			else:
 				self.spikeEvents[n]		= 0
 

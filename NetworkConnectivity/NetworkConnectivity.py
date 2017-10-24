@@ -82,8 +82,8 @@ def generate_connectivity_vector(N, adjacencyScheme, initWeightScheme, args={}, 
 		try:
 			function	= args['adj_prob_dist_fn'].lower()
 			distances 	= numpy.asarray(args['distances'])
-			print "-----------------------------------------"
-			print "distances: " + str(distances)
+			# print "-----------------------------------------"
+			# print "distances: " + str(distances)
 		except KeyError:
 			exit_on_connectivity_error("When using 'adjacencyScheme = distance_probability', generate_connectivity_vector expects the 'args' method argument to hold a dictionary with the following key-value pairs: {'adj_prob_dist_fn':<string>, 'distances':list|<numpy.ndarray>}")
 		if(function == 'linear'):
@@ -96,9 +96,9 @@ def generate_connectivity_vector(N, adjacencyScheme, initWeightScheme, args={}, 
 			p0 		= args['p0_a']
 			sigma 	= args['sigma_a']
 			adjProbs 	= p0*numpy.exp(-1*distances/sigma).clip(min=0.0, max=1.0)
-			print "adjProbs:  " + str(adjProbs)
+			# print "adjProbs:  " + str(adjProbs)
 			adjacencyVector	= (numpy.random.rand(N) < adjProbs).astype(int)
-			print "adjVectr:  " + str(adjacencyVector)
+			# print "adjVectr:  " + str(adjacencyVector)
 
 
 	else:
@@ -116,7 +116,7 @@ def generate_connectivity_vector(N, adjacencyScheme, initWeightScheme, args={}, 
 		else:
 			exit_on_connectivity_error("In call to generate_connectivity_vector, selfLoops set to False (default), but no neuronID was given. Without a given neuronID, the index of the self-loop vector element is ambiguous.")
 
-	print "adjnoloop: " + str(adjacencyVector)
+	# print "adjnoloop: " + str(adjacencyVector)
 
 	#~~~~~~~~~~~~~~~~~~~~~
 	# Initialize weights ~
@@ -165,7 +165,7 @@ def generate_connectivity_vector(N, adjacencyScheme, initWeightScheme, args={}, 
 	else:
 		exit_on_connectivity_error("'initWeightScheme' "+str(initWeightScheme)+" is unrecognized.")
 
-	print "weights:   " + str(weightVector)
+	# print "weights:   " + str(weightVector)
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Generate mask for added sparsity ~
@@ -174,7 +174,7 @@ def generate_connectivity_vector(N, adjacencyScheme, initWeightScheme, args={}, 
 	indices			= numpy.random.choice(range(N), int(N*(1-sparsity)), replace=False)
 	sparsityMask[indices]	= 1
 
-	print "sparsity:   " + str(sparsityMask)
+	# print "sparsity:   " + str(sparsityMask)
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Compile the connectivity vector: ~
@@ -183,7 +183,7 @@ def generate_connectivity_vector(N, adjacencyScheme, initWeightScheme, args={}, 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	connectivityVector 	= weightVector*adjacencyVector*sparsityMask
 
-	print "connectivity: " +str(connectivityVector)
+	# print "connectivity: " +str(connectivityVector)
 
 	return connectivityVector
 

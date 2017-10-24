@@ -123,7 +123,7 @@ class NeuronNetwork(object):
 			print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects argument 'connectivity' to be a 2D numeric weight matrix as its argument (list-of-lists or numpy.ndarray)")
 			exit()
 
-		print "synapticConnectivity:\n" + str(synapticConnectivity)
+		# print "synapticConnectivity:\n" + str(synapticConnectivity)
 
 		#--------------------
 		# When a list of neurons to update is not given, the connectivity for the entire network is updated.

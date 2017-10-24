@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"output",
+				"outputs_neuronIDs"
+			],
+			[
+				"outpu",
+				"outputs_neuronIDs"
+			],
+			[
+				"I_",
+				"I_excit"
+			],
+			[
+				"I_in",
+				"I_inhib"
+			],
+			[
+				"label",
+				"label"
+			],
+			[
+				"synap",
+				"synapse_type"
+			],
+			[
+				"tau_g",
+				"tau_g_inhib"
+			],
+			[
 				"axesB",
 				"axesBorderColor"
 			],
@@ -42,10 +70,6 @@
 			[
 				"syna",
 				"synpaseInducedConductanceChange_inhib"
-			],
-			[
-				"synap",
-				"synpaseInducedConductanceChange_excit"
 			],
 			[
 				"gapWt",
@@ -194,10 +218,6 @@
 			[
 				"neurid",
 				"neuronIDs"
-			],
-			[
-				"label",
-				"neuronLabels"
 			],
 			[
 				"type",
@@ -428,10 +448,6 @@
 				"tau_g_synInhib"
 			],
 			[
-				"tau_g",
-				"tau_g_synExcit"
-			],
-			[
 				"vol",
 				"voltageLogs"
 			],
@@ -498,22 +514,6 @@
 			[
 				"maxG",
 				"maxGrowthTimeInterval_secs"
-			],
-			[
-				"maxGro",
-				"maxGrowthTimeIntervals_secs"
-			],
-			[
-				"maxGr",
-				"maxGrowthRate_ODperSec"
-			],
-			[
-				"specD",
-				"specData"
-			],
-			[
-				"plate",
-				"platedatafiles"
 			]
 		]
 	},
@@ -523,42 +523,16 @@
 			"file": "demo_LIFNetwork.py",
 			"settings":
 			{
-				"buffer_size": 37170,
+				"buffer_size": 37250,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "debugging.txt",
+			"file": "demo_IzhikevichNetwork.py",
 			"settings":
 			{
-				"buffer_size": 7877343,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "NetworkModels/LIFNetwork.py",
-			"settings":
-			{
-				"buffer_size": 20511,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "NetworkVisualization/NetworkPlots.py",
-			"settings":
-			{
-				"buffer_size": 70423,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "NetworkVisualization/OverviewFigures.py",
-			"settings":
-			{
-				"buffer_size": 6076,
+				"buffer_size": 37452,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -567,16 +541,43 @@
 			"file": "NetworkModels/NeuronNetwork.py",
 			"settings":
 			{
-				"buffer_size": 19923,
+				"buffer_size": 19917,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "NetworkGeometry/CylinderSurface.py",
+			"file": "NetworkModels/IzhikevichNetwork.py",
 			"settings":
 			{
-				"buffer_size": 13817,
+				"buffer_size": 17665,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NetworkModels/LIFNetwork.py",
+			"settings":
+			{
+				"buffer_size": 20500,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NetworkVisualization/NetworkPlots.py",
+			"settings":
+			{
+				"buffer_size": 70433,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NetworkVisualization/OverviewFigures.py",
+			"settings":
+			{
+				"buffer_size": 13024,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -585,12 +586,13 @@
 			"file": "NetworkConnectivity/NetworkConnectivity.py",
 			"settings":
 			{
-				"buffer_size": 11790,
+				"buffer_size": 11806,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		}
 	],
-	"build_system": "",
+	"build_system": "Packages/Python/Python.sublime-build",
 	"build_system_choices":
 	[
 		[
@@ -615,6 +617,26 @@
 		],
 		[
 			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"PyProj",
+					""
+				],
 				[
 					"Packages/Python/Python.sublime-build",
 					""
@@ -696,6 +718,10 @@
 	],
 	"file_history":
 	[
+		"/home/ryan/neuronal-networks/todo.txt",
+		"/home/ryan/neuronal-networks/neuronal-networks.sublime-project",
+		"/home/ryan/neuronal-networks/NetworkGeometry/CylinderSurface.py",
+		"/home/ryan/neuronal-networks/debugging.txt",
 		"/home/ryan/neuronal-networks/_____.png",
 		"/home/ryan/neuronal-networks/NetworkVisualization/VizUtility.py",
 		"/home/ryan/neuronal-networks/MidpointNormalize.py",
@@ -831,6 +857,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"print",
+			"set_bad(",
+			"set_bad",
+			"warning",
+			"1.0",
+			"0",
+			"timeSince",
+			"position",
+			"constAlpha_g_excit",
+			"3d",
 			"tight_",
 			"save",
 			"axesGridColor",
@@ -948,17 +984,7 @@
 			"connectivity",
 			"synapse_type",
 			"update_neurons",
-			"connectivity",
-			"[",
-			"ConnectionWeights",
-			"testNetworkDataFrame",
-			"dataframe",
-			"input",
-			"log",
-			"raster",
-			"enumerate",
-			"input",
-			"_cmap"
+			"connectivity"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -1104,7 +1130,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -1113,15 +1139,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 37170,
+						"buffer_size": 37250,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								25316,
-								25316
+								2044,
+								2044
 							]
 						],
 						"settings":
@@ -1130,55 +1156,56 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 7362.0,
+						"translation.y": 971.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "demo_IzhikevichNetwork.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 37452,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4061,
+								4061
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1745.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "debugging.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7877343,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1051,
-								1051
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
 					"buffer": 2,
-					"file": "NetworkModels/LIFNetwork.py",
+					"file": "NetworkModels/NeuronNetwork.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 20511,
+						"buffer_size": 19917,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								3359,
+								3359
 							]
 						],
 						"settings":
@@ -1187,56 +1214,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "NetworkVisualization/NetworkPlots.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 70423,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								61704,
-								61704
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 14291.0,
+						"translation.y": 1212.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "NetworkVisualization/OverviewFigures.py",
+					"buffer": 3,
+					"file": "NetworkModels/IzhikevichNetwork.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6076,
+						"buffer_size": 17665,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1300,
-								1300
+								17394,
+								17394
 							]
 						],
 						"settings":
@@ -1245,56 +1243,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1125.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "NetworkModels/NeuronNetwork.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 19923,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								15581,
-								15581
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 4707.0,
+						"translation.y": 5089.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "NetworkGeometry/CylinderSurface.py",
+					"buffer": 4,
+					"file": "NetworkModels/LIFNetwork.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13817,
+						"buffer_size": 20500,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1671,
-								1671
+								20500,
+								20500
 							]
 						],
 						"settings":
@@ -1303,7 +1272,65 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 45.0,
+						"translation.y": 6027.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "NetworkVisualization/NetworkPlots.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 70433,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								45839,
+								45839
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 10827.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "NetworkVisualization/OverviewFigures.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13024,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9425,
+								9425
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2690.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 7,
@@ -1315,15 +1342,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11790,
+						"buffer_size": 11806,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10205,
-								10205
+								673,
+								673
 							]
 						],
 						"settings":
@@ -1332,10 +1359,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2712.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]

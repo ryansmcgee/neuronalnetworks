@@ -138,10 +138,10 @@ while(network.sim_state_valid()):
 
 # exit()
 
-simNeuronsDataFrame	= network.get_neurons_dataframe()
+# simNeuronsDataFrame	= network.get_neurons_dataframe()
 # print simNeuronsDataFrame
 
-simInputsDataFrame	= network.get_inputs_dataframe()
+# simInputsDataFrame	= network.get_inputs_dataframe()
 # print simInputsDataFrame
 
 # print network.get_spike_times()
