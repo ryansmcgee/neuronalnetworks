@@ -4,7 +4,7 @@ import numpy as numpy
 import pandas as pandas
 # import seaborn as seaborn
 import matplotlib
-# matplotlib.use('Agg') # For running matplotlib through ssh. Must be before importing matplotlib.pyplot or pylab!
+matplotlib.use('Agg') # For running matplotlib through ssh. Must be before importing matplotlib.pyplot or pylab!
 from matplotlib import pyplot as pyplot
 import time
 
@@ -24,9 +24,9 @@ experimentData	= []
 
 counter = 0
 
-numReps	= 1
+numReps	= 5
 k_vals = [0,1,2,3,4,5,6,7,8]
-c_vals = numpy.arange(0.0, 2.0, 0.5)
+c_vals = numpy.arange(0.0, 2.0, 0.05)
 for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
 	for idx_c, _CUR_GAP_C_W_ in enumerate(c_vals):
 		for rep in range(numReps):
