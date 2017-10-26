@@ -3,6 +3,8 @@ from __future__ import division
 import numpy as numpy
 import pandas as pandas
 # import seaborn as seaborn
+import matplotlib
+matplotlib.use('Agg') # For running matplotlib through ssh. Must be before importing matplotlib.pyplot or pylab!
 from matplotlib import pyplot as pyplot
 import time
 
