@@ -1005,7 +1005,7 @@ def rate_network_diagram_3d(ax, network, connectivityMatrix=None, basisT=1000, d
 	edge_cmap = matplotlib.colors.LinearSegmentedColormap.from_list('SubtleGreys', [edgeMinColor, edgeMaxColor], N=256)
 
 	rate_cmap = matplotlib.cm.get_cmap('afmhot' if dark else 'YlOrRd')
-	rate_cmap.set_bad(color='blue')#(alpha=0.0) # This forces a color for bad (ie masked) values
+	rate_cmap.set_bad(color=backgroundColor)#(alpha=0.0) # This forces a color for bad (ie masked) values
 
 	neuronSynEndpts	= []
 	neuronSynWts	= []
@@ -1026,7 +1026,7 @@ def rate_network_diagram_3d(ax, network, connectivityMatrix=None, basisT=1000, d
 	neuronIDs_outputExcit	= network.get_neuron_ids(synapseTypes=['excitatory'], labels=['output'])
 	neuronIDs_outputInhib	= network.get_neuron_ids(synapseTypes=['inhibitory'], labels=['output'])
 
-	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', cmap=rate_cmap, vmin=0.0, edgecolors=outlineColor, linewidths=1, s=1.05*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOExcit]), edgecolors=outlineColor, linewidths=1, s=1.05*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
 	ax.scatter(xs=neuronCoords[neuronIDs_nonIOInhib,0], ys=neuronCoords[neuronIDs_nonIOInhib,1], zs=neuronCoords[neuronIDs_nonIOInhib,2], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOInhib]), edgecolors=outlineColor, linewidths=1, s=1.05*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
 	ax.scatter(xs=neuronCoords[neuronIDs_inputExcit,0], ys=neuronCoords[neuronIDs_inputExcit,1], zs=neuronCoords[neuronIDs_inputExcit,2], marker='^', c=rate_cmap(neuronRateCmapping[neuronIDs_inputExcit]), edgecolors=outlineColor, linewidths=1, s=1.7*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=False)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
 	ax.scatter(xs=neuronCoords[neuronIDs_inputInhib,0], ys=neuronCoords[neuronIDs_inputInhib,1], zs=neuronCoords[neuronIDs_inputInhib,2], marker='^', c=rate_cmap(neuronRateCmapping[neuronIDs_inputInhib]), edgecolors=outlineColor, linewidths=1, s=1.7*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=False)

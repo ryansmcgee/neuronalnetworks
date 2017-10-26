@@ -3,6 +3,8 @@ from __future__ import division
 import numpy as numpy
 import pandas as pandas
 # import seaborn as seaborn
+import matplotlib
+matplotlib.use('Agg') # For running matplotlib through ssh. Must be before importing matplotlib.pyplot or pylab!
 from matplotlib import pyplot as pyplot
 import time
 
@@ -15,6 +17,8 @@ from NetworkConnectivity.NetworkConnectivity import *
 from NetworkInput.ConstantInput import ConstantInput
 from NetworkVisualization.NetworkPlots import *
 from NetworkVisualization.OverviewFigures import *
+
+numpy.random.seed(69000)
 
 experimentData	= []
 
@@ -73,7 +77,7 @@ for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
 			network.set_synaptic_connectivity(connectivity=W_synE, synapseType='e', updateNeurons=neuronIDs_excit)
 			network.set_gapjunction_connectivity(connectivity=W_synG)
 
-			network.initialize_simulation(T_max=1000, deltaT=0.1)
+			network.initialize_simulation(T_max=100, deltaT=0.1)
 
 			simStartTime = time.time()
 			while(network.sim_state_valid()):
