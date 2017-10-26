@@ -22,7 +22,7 @@ experimentData	= []
 
 counter = 0
 
-numReps	= 3
+numReps	= 1
 k_vals = [0,1,2,3,4,5,6,7,8]
 c_vals = numpy.arange(0.0, 2.0, 0.05)
 for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
@@ -64,7 +64,7 @@ for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
 													args={
 															'distances':network.geometry.distances,
 															'k':4,
-															'low':0.0, 'high':2.0
+															'low':0.5, 'high':1.5
 													} )
 			W_synG 	= generate_connectivity_matrix(N=network.N, adjacencyScheme='nearest_neighbors', initWeightScheme='constant',
 													args={
@@ -111,7 +111,7 @@ for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
 			if(_CUR_GAP_K_ == numpy.median(k_vals) and _CUR_GAP_C_W_ == numpy.sort(c_vals)[1] and rep == 0):
 				representativeNetwork = network
 
-				network_overview_figure(network, synapseDiagram2D=True, gapjunctionDiagram2D=True, spikerateDiagram2D=True)
+				# network_overview_figure(network, synapseDiagram2D=True, gapjunctionDiagram2D=True, spikerateDiagram2D=True)
 
 				# pyplot.show()
 
@@ -164,6 +164,6 @@ experimentFigure.tight_layout()
 
 pyplot.savefig('LIF_torusSurface_evenlyPos_knnSynAdj_constSynWts_knnGapAdj_constGapWts_1constInput_Tmax'+str(representativeNetwork.T_max)+'_'+str(numReps)+'reps_RESULTS.png', bbox_inches='tight')
 
-pyplot.show()
+# pyplot.show()
 
 #end
