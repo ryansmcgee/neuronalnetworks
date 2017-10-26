@@ -15,6 +15,7 @@ from matplotlib import pyplot as pyplot
 
 from NetworkModels.LIFNetwork import LIFNetwork
 from NetworkGeometry.CylinderSurface import CylinderSurface
+from NetworkGeometry.TorusSurface import TorusSurface
 from NetworkConnectivity.NetworkConnectivity import *
 from NetworkInput.ConstantInput import ConstantInput
 
@@ -28,7 +29,7 @@ numpy.random.seed(69000)
 network 	= LIFNetwork()
 
 # network.geometry = CylinderSurface(r=1, h=3)
-network.geometry = CylinderSurface(w=10, h=10)
+network.geometry = TorusSurface(w=10, h=10)
 
 N_excit = 80	#numpy.random.randint(low=2, high=200)
 N_inhib = 20
@@ -116,10 +117,11 @@ network.set_gapjunction_connectivity(connectivity=W_synG)
 
 
 
-network.initialize_simulation(T_max=1000, deltaT=0.1)
+network.initialize_simulation(T_max=100, deltaT=0.1)
 
 
 # while(network.t < (network.T_max-(network.deltaT/2))):	# The right-hand-side of this conditional is what it is rather than just T_max to avoid numerical roundoff errors causing unexpected conditional outcomes
+print "start sim"
 while(network.sim_state_valid()):
 
 	network.set_input_vals( vals=[currentInput1.val(network.t), currentInput2.val(network.t), currentInput3.val(network.t)] )
@@ -129,15 +131,15 @@ while(network.sim_state_valid()):
 	network.sim_step()
 
 	# break
-
+print "end sim"
 # network.get_neurons_dataframe().to_csv('debugging.txt', sep='\t')
 
 # exit()
 
-simNeuronsDataFrame	= network.get_neurons_dataframe()
-# print simNeuronsDataFrame
+# simNeuronsDataFrame	= network.get_neurons_dataframe()
+# # print simNeuronsDataFrame
 
-simInputsDataFrame	= network.get_inputs_dataframe()
+# simInputsDataFrame	= network.get_inputs_dataframe()
 # print simInputsDataFrame
 
 # print network.get_spike_times()
@@ -216,7 +218,7 @@ simInputsDataFrame	= network.get_inputs_dataframe()
 
 # exit()
 
-LIF_network_overview_figure(network, synapseDiagram2D=True, gapjunctionDiagram2D=True, spikerateDiagram2D=True)
+network_overview_figure(network, synapseDiagram2D=True, gapjunctionDiagram2D=True, spikerateDiagram2D=True)
 
 # pyplot.savefig('_____.png', bbox_inches='tight')
 

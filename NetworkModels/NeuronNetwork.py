@@ -129,7 +129,7 @@ class NeuronNetwork(object):
 		# When a list of neurons to update is not given, the connectivity for the entire network is updated.
 		#	- 'connectivity' argument is expected to be an NxN matrix.
 		#--------------------
-		if(updateNeurons == None):
+		if(updateNeurons is None):
 			# Check that the dimension of the weight matrix provided matches the number of neurons in the network:
 			if(synapticConnectivity.shape[0] != self.N or synapticConnectivity.shape[1] != self.N):
 				print("(NeuronNetwork) Error: The method set_synaptic_connectivity expects NxN weight matrix to be given as the argument 'connectivity', where N = num neurons in network. The given matrix has dimensions "+str(synapticConnectivity.shape[1])+"x"+str(synapticConnectivity.shape[0])+", but the current num neurons is "+str(self.N))
@@ -342,7 +342,7 @@ class NeuronNetwork(object):
 
 		# Check that we are not going past the time T_max allocated in initializeSimulation:
 		if(self.t >= self.T_max - self.deltaT*0.1): # Check that t is not within a small epsilon of being equal to T_max to avoid numerical imprecision messing up this check.
-			print("(NeuronNetwork): The maximum simulation time has been reached. [t = "+str(self.t)+", T_max = "+str(self.T_max)+", deltaT = "+str(self.deltaT)+", max num timesteps = "+str(self.T_max/self.deltaT)+", current timestep num = " +str(self.timeStepIndex))
+			# print("(NeuronNetwork): The maximum simulation time has been reached. [t = "+str(self.t)+", T_max = "+str(self.T_max)+", deltaT = "+str(self.deltaT)+", max num timesteps = "+str(self.T_max/self.deltaT)+", current timestep num = " +str(self.timeStepIndex))
 			return False
 
 		return True

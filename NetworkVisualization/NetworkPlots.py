@@ -32,7 +32,8 @@ def input_connectivity_colormap(connectivityMatrix):
 
 # def traces_plot(ax, x_data, y1_data=None, y1_labels=None, y1_colors=None, y1_alphas=None, y1_linestyles=None, y2_data=None, y2_labels=None, y2_colors=None, y2_alphas=None, x_axis_label='', y_axis1_label='', fontsize=8, labelsize=6):
 def traces_plot(ax, x, y1_traces=None, y2_traces=None, x_lim=None, y1_lim=None, y2_lim=None,
-					x_axis_label='', y1_axis_label='', y2_axis_label='', y1_legend=False, y2_legend=False, fontsize=8, labelsize=6):
+					x_axis_label='', y1_axis_label='', y2_axis_label='', y1_legend=False, y2_legend=False, 
+					fontsize=8, x_labelsize=6, y1_labelsize=6, y2_labelsize=6):
 
 	yAx1 = ax
 	yAx2 = yAx1.twinx()
@@ -72,7 +73,7 @@ def traces_plot(ax, x, y1_traces=None, y2_traces=None, x_lim=None, y1_lim=None, 
 		yAx2.set(ylim=(y2_lim if y2_lim is not None else [y2_minVal, y2_maxVal]))
 		# yAx2.set(xlim=(x_lim if x_lim is not None else [0, max(x)])) # set along with y1_axis
 		yAx2.grid(False)
-		yAx2.tick_params(axis='y', which='major', labelsize=6)
+		yAx2.tick_params(axis='y', which='major', labelsize=y2_labelsize)
 
 		if(y2_legend):
 			yAx2.legend(y2_allLabels, loc='upper right', fontsize='x-small')
@@ -113,7 +114,14 @@ def traces_plot(ax, x, y1_traces=None, y2_traces=None, x_lim=None, y1_lim=None, 
 		yAx1.set(ylim=(y1_lim if y1_lim is not None else [y1_minVal, y1_maxVal]))
 		yAx1.set(xlim=(x_lim if x_lim is not None else [0, max(x)]))
 		yAx1.grid(False)
-		yAx1.tick_params(axis='y', which='major', labelsize=6)
+		yAx1.tick_params(axis='y', which='major', labelsize=y1_labelsize)
+
+		if(x_labelsize > 0):
+			yAx1.set_xlabel('t', fontsize=fontsize)
+			yAx1.tick_params(axis='x', which='major', labelsize=x_labelsize)
+		else:
+			yAx1.set_xticklabels([])
+
 
 		if(y1_legend):
 			yAx1.legend(y1_allLabels, loc='upper right', fontsize='x-small')
@@ -129,7 +137,7 @@ def spike_raster_plot(ax, network):
 	ax.set_ylim(0.5, len(spikeTimes) + 0.5)
 	ax.set_xlim(0, network.T_max)
 	ax.set_yticks([] if network.N > 50 else range(1, network.N+1))
-	ax.set_xticks([])
+	ax.set_xticks([0, network.T_max])
 	ax.grid(False)
 	ax.set_xlabel('t')
 	ax.set_ylabel('Neuron Spikes')
@@ -171,7 +179,7 @@ def synapse_network_diagram_2d(ax, network, showAxes=False):
 			if(synWt != 0.0):
 
 				edgeIsTorroidal_w 	= torroidal[0] and abs(postsynCoord[0]-presynCoord[0])>(network.geometry.w/2)
-				edgeIsTorroidal_h 	= torroidal[1] and abs(postsynCoord[1]-presynCoord[1])>(network.geometry.w/2)
+				edgeIsTorroidal_h 	= torroidal[1] and abs(postsynCoord[1]-presynCoord[1])>(network.geometry.h/2)
 
 				edgeColor = synWt_cmap( abs(synWt-minWt)/abs(maxWt-minWt)  ) #numpy.random.rand(3,1)
 
@@ -401,9 +409,9 @@ def synapse_network_diagram_3d(ax, network):
 	ax.w_xaxis.set_pane_color(axesPaneColor)
 	ax.w_yaxis.set_pane_color(axesPaneColor)
 	ax.w_zaxis.set_pane_color(axesPaneColor)
-	ax.w_xaxis._axinfo.update({'grid' : {'color': axesGridColor}})
-	ax.w_yaxis._axinfo.update({'grid' : {'color': axesGridColor}})
-	ax.w_zaxis._axinfo.update({'grid' : {'color': axesGridColor}})
+	# ax.w_xaxis._axinfo.update({'grid' : {'color': axesGridColor}})
+	# ax.w_yaxis._axinfo.update({'grid' : {'color': axesGridColor}})
+	# ax.w_zaxis._axinfo.update({'grid' : {'color': axesGridColor}})
 
 	ax.autoscale(tight=True)
 
@@ -456,7 +464,7 @@ def gapjunction_network_diagram_2d(ax, network, showAxes=False):
 					edgesPlotted.append((i,j))
 
 				edgeIsTorroidal_w 	= torroidal[0] and abs(postgapCoord[0]-pregapCoord[0])>(network.geometry.w/2)
-				edgeIsTorroidal_h 	= torroidal[1] and abs(postgapCoord[1]-pregapCoord[1])>(network.geometry.w/2)
+				edgeIsTorroidal_h 	= torroidal[1] and abs(postgapCoord[1]-pregapCoord[1])>(network.geometry.h/2)
 
 				edgeColor = gapWt_cmap( abs(gapWt-minWt)/abs(maxWt-minWt)  ) #numpy.random.rand(3,1)
 
@@ -723,9 +731,9 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 	# Calculate the index into the colormap range for each rate:
 	neuronRateCmapping = numpy.abs(neuronsSpikeRates-minRate)/abs(maxRate-minRate)
 
-	print neuronsNumSpikes
+	# print neuronsNumSpikes
 
-	print neuronsSpikeRates
+	# print neuronsSpikeRates
 
 	#~~~~~~~~~~~~~~~~~~~~
 	# Render the diagram:
@@ -768,7 +776,7 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 			if(edgeWt != 0.0):
 
 				edgeIsTorroidal_w 	= torroidal[0] and abs(postconnCoord[0]-preconnCoord[0])>(network.geometry.w/2)
-				edgeIsTorroidal_h 	= torroidal[1] and abs(postconnCoord[1]-preconnCoord[1])>(network.geometry.w/2)
+				edgeIsTorroidal_h 	= torroidal[1] and abs(postconnCoord[1]-preconnCoord[1])>(network.geometry.h/2)
 
 				edgeColor = edge_cmap( abs(edgeWt-minWt)/abs(maxWt-minWt)  ) #numpy.random.rand(3,1)
 
@@ -922,7 +930,7 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 
 	ax.set_aspect('equal', 'datalim')
 
-	ax.set_axis_bgcolor(backgroundColor)
+	ax.set_facecolor(backgroundColor)
 
 	margin_w = 0.02*w
 	margin_h = 0.02*h
@@ -997,7 +1005,7 @@ def rate_network_diagram_3d(ax, network, connectivityMatrix=None, basisT=1000, d
 	edge_cmap = matplotlib.colors.LinearSegmentedColormap.from_list('SubtleGreys', [edgeMinColor, edgeMaxColor], N=256)
 
 	rate_cmap = matplotlib.cm.get_cmap('afmhot' if dark else 'YlOrRd')
-	rate_cmap.set_bad(color=backgroundColor)#(alpha=0.0) # This forces a color for bad (ie masked) values
+	rate_cmap.set_bad(color='blue')#(alpha=0.0) # This forces a color for bad (ie masked) values
 
 	neuronSynEndpts	= []
 	neuronSynWts	= []
@@ -1018,7 +1026,7 @@ def rate_network_diagram_3d(ax, network, connectivityMatrix=None, basisT=1000, d
 	neuronIDs_outputExcit	= network.get_neuron_ids(synapseTypes=['excitatory'], labels=['output'])
 	neuronIDs_outputInhib	= network.get_neuron_ids(synapseTypes=['inhibitory'], labels=['output'])
 
-	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOExcit]), edgecolors=outlineColor, linewidths=1, s=1.05*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', cmap=rate_cmap, vmin=0.0, edgecolors=outlineColor, linewidths=1, s=1.05*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
 	ax.scatter(xs=neuronCoords[neuronIDs_nonIOInhib,0], ys=neuronCoords[neuronIDs_nonIOInhib,1], zs=neuronCoords[neuronIDs_nonIOInhib,2], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOInhib]), edgecolors=outlineColor, linewidths=1, s=1.05*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
 	ax.scatter(xs=neuronCoords[neuronIDs_inputExcit,0], ys=neuronCoords[neuronIDs_inputExcit,1], zs=neuronCoords[neuronIDs_inputExcit,2], marker='^', c=rate_cmap(neuronRateCmapping[neuronIDs_inputExcit]), edgecolors=outlineColor, linewidths=1, s=1.7*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=False)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
 	ax.scatter(xs=neuronCoords[neuronIDs_inputInhib,0], ys=neuronCoords[neuronIDs_inputInhib,1], zs=neuronCoords[neuronIDs_inputInhib,2], marker='^', c=rate_cmap(neuronRateCmapping[neuronIDs_inputInhib]), edgecolors=outlineColor, linewidths=1, s=1.7*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=False)

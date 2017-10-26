@@ -10,9 +10,9 @@ class IzhikevichNetwork(NeuronNetwork):
 
 		NeuronNetwork.__init__(self)
 
-		#################################
-		# LIF NEURON PARAMETER VECTORS: #
-		#################################
+		########################################
+		# IZHIKEVICH NEURON PARAMETER VECTORS: #
+		########################################
 		# The following attributes are vectors that hold a list of the designated parameter values for all neurons in the network.
 		# - The ith element in the vector is the value of that parameter for the ith neuron in the network.
 
@@ -29,15 +29,19 @@ class IzhikevichNetwork(NeuronNetwork):
 		self.V_eqExcit 		= numpy.empty(shape=[0])
 		self.V_eqInhib 		= numpy.empty(shape=[0])
 
+		self.R_membrane		= numpy.empty(shape=[0])
+		self.k 				= numpy.empty(shape=[0])
+
+		#------------------------------------------
+		# Recovery Variable & Related parameters: -
+		#------------------------------------------
+
 		self.U 				= numpy.empty(shape=[0])
 		self.U_init			= numpy.empty(shape=[0])
 
 		self.a 				= numpy.empty(shape=[0])
 		self.b 				= numpy.empty(shape=[0])
 		self.d 				= numpy.empty(shape=[0])
-
-		self.R_membrane		= numpy.empty(shape=[0])
-		self.k 				= numpy.empty(shape=[0])
 
 		#----------------
 		# Conductances: -

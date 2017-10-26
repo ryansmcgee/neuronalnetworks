@@ -90,12 +90,6 @@ def zero_midpoint_cmap(orig_cmap, min_val=0.0, max_val=1.0, name='zero-midpt-cma
     # shifted index to match the data
     shift_index = numpy.hstack([numpy.linspace(0.0, midpoint, 128, endpoint=False), numpy.linspace(midpoint, 1.0, 129, endpoint=True)])
 
-    print "vizutil"
-    print min_val
-    print max_val
-
-    print midpoint
-
     for ri, si in zip(reg_index, shift_index):
         if abs(si - midpoint) < epsilon:
             r, g, b, a = orig_cmap(0.5) # 0.5 = original midpoint.
