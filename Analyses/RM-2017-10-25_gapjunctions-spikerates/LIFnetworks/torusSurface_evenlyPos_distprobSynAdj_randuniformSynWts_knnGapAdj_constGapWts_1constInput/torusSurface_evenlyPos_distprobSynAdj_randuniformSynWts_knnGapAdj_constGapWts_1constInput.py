@@ -138,7 +138,7 @@ for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
 
 experimentDataframe	= pandas.DataFrame(experimentData)
 
-experimentDataframe.to_csv('LIF_torusSurface_evenlyPos_knnSynAdj_constSynWts_knnGapAdj_constGapWts_1constInput_Tmax'+str(representativeNetwork.T_max)+'_'+str(numReps)+'reps_RESULTS.csv', index=False)
+experimentDataframe.to_csv('LIF_torusSurface_evenlyPos_distprobSynAdj_randuniformSynWts_knnGapAdj_constGapWts_1constInput_Tmax'+str(representativeNetwork.T_max)+'_'+str(numReps)+'reps_RESULTS.csv', index=False)
 
 spikeRateAvgOverRepsDataframe = experimentDataframe['spikeRate'].groupby([experimentDataframe['c_w'], experimentDataframe['k']]).mean().unstack()
 
@@ -167,7 +167,7 @@ ax_avgRateHeatmap.set_xlabel("k (gap jn KNN connectivity)")
 
 experimentFigure.tight_layout()
 
-pyplot.savefig('LIF_torusSurface_evenlyPos_knnSynAdj_constSynWts_knnGapAdj_constGapWts_1constInput_Tmax'+str(representativeNetwork.T_max)+'_'+str(numReps)+'reps_RESULTS.png', bbox_inches='tight')
+pyplot.savefig('LIF_torusSurface_evenlyPos_distprobSynAdj_randuniformSynWts_knnGapAdj_constGapWts_1constInput_Tmax'+str(representativeNetwork.T_max)+'_'+str(numReps)+'reps_RESULTS.png', bbox_inches='tight')
 
 # pyplot.show()
 
