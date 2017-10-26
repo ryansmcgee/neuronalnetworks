@@ -1,1 +1,0 @@
-[BAD] # for knn in even grid, there are no distance differences to make randdistprob weights interesting
