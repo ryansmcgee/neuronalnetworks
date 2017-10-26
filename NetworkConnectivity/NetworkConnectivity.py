@@ -160,7 +160,7 @@ def generate_connectivity_vector(N, adjacencyScheme, initWeightScheme, args={}, 
 		elif(function == 'exponential'):
 			p0 		= args['p0_w']
 			sigma 	= args['sigma_w']
-			weightVector	= p0*numpy.exp(-1*distances/sigma).clip(min=0.0, max=1.0)
+			weightVector	= p0*numpy.exp(-1*distances/sigma)
 
 	else:
 		exit_on_connectivity_error("'initWeightScheme' "+str(initWeightScheme)+" is unrecognized.")
