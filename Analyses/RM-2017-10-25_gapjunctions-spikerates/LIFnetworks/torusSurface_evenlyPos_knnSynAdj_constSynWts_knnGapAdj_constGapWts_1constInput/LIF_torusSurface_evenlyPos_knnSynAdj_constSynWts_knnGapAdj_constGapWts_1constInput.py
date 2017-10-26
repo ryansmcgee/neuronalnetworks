@@ -164,6 +164,6 @@ experimentFigure.tight_layout()
 
 pyplot.savefig('LIF_torusSurface_evenlyPos_knnSynAdj_constSynWts_knnGapAdj_constGapWts_1constInput_Tmax'+str(representativeNetwork.T_max)+'_'+str(numReps)+'reps_RESULTS.png', bbox_inches='tight')
 
-pyplot.show()
+# pyplot.show()
 
 #end

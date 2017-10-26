@@ -930,7 +930,7 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 
 	ax.set_aspect('equal', 'datalim')
 
-	ax.set_facecolor(backgroundColor)
+	ax.set_axis_bgcolor(backgroundColor)
 
 	margin_w = 0.02*w
 	margin_h = 0.02*h

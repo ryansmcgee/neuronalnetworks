@@ -22,9 +22,9 @@ experimentData	= []
 
 counter = 0
 
-numReps	= 1
+numReps	= 3
 k_vals = [0,1,2,3,4,5,6,7,8]
-c_vals = numpy.arange(0.0, 1.0, 0.05)
+c_vals = numpy.arange(0.0, 2.0, 0.05)
 for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
 	for idx_c, _CUR_GAP_C_W_ in enumerate(c_vals):
 		for rep in range(numReps):
