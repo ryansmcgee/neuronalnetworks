@@ -32,7 +32,7 @@ def input_connectivity_colormap(connectivityMatrix):
 
 # def traces_plot(ax, x_data, y1_data=None, y1_labels=None, y1_colors=None, y1_alphas=None, y1_linestyles=None, y2_data=None, y2_labels=None, y2_colors=None, y2_alphas=None, x_axis_label='', y_axis1_label='', fontsize=8, labelsize=6):
 def traces_plot(ax, x, y1_traces=None, y2_traces=None, x_lim=None, y1_lim=None, y2_lim=None,
-					x_axis_label='', y1_axis_label='', y2_axis_label='', y1_legend=False, y2_legend=False, 
+					x_axis_label='', y1_axis_label='', y2_axis_label='', y1_legend=False, y2_legend=False,
 					fontsize=8, x_labelsize=6, y1_labelsize=6, y2_labelsize=6):
 
 	yAx1 = ax
@@ -146,9 +146,15 @@ def spike_raster_plot(ax, network):
 
 def synapse_network_diagram_2d(ax, network, showAxes=False):
 
+	try:
+		neuronCoords = network.geometry.surfacePlaneCoords
+	except AttributeError:
+		print("The "+str(network.geometry.geometry)+" geometry class does not define a 2D surface plane coordinate system for neuron positions.")
+		return
+
 	synapseWeights = network.connectionWeights_synExcit - network.connectionWeights_synInhib
 
-	neuronCoords = network.geometry.surfacePlaneCoords
+
 
 	w = network.geometry.w
 	h = network.geometry.h
@@ -421,9 +427,13 @@ def synapse_network_diagram_3d(ax, network):
 
 def gapjunction_network_diagram_2d(ax, network, showAxes=False):
 
-	gapjnWeights = network.connectionWeights_gap
+	try:
+		neuronCoords = network.geometry.surfacePlaneCoords
+	except AttributeError:
+		print("The "+str(network.geometry.geometry)+" geometry class does not define a 2D surface plane coordinate system for neuron positions.")
+		return
 
-	neuronCoords = network.geometry.surfacePlaneCoords
+	gapjnWeights = network.connectionWeights_gap
 
 	w = network.geometry.w
 	h = network.geometry.h
@@ -652,7 +662,7 @@ def gapjunction_network_diagram_3d(ax, network):
 
 	maxWt = numpy.max(gapjnWeights)
 	minWt = numpy.min(gapjnWeights)
-	gapWt_cmap = matplotlib.cm.get_cmap('Purples')
+	gapWt_cmap = zero_midpoint_cmap(orig_cmap=matplotlib.cm.get_cmap('Purples'), min_val=minWt, max_val=maxWt)
 
 	neuronGapEndpts	= []
 	neuronGapWts	= []
@@ -706,9 +716,13 @@ def gapjunction_network_diagram_3d(ax, network):
 
 def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, dark=False, showAxes=False):
 
-	connectivityWeights = connectivityMatrix if connectivityMatrix is not None else (network.connectionWeights_synExcit - network.connectionWeights_synInhib) # synapse weights
+	try:
+		neuronCoords = network.geometry.surfacePlaneCoords
+	except AttributeError:
+		print("The "+str(network.geometry.geometry)+" geometry class does not define a 2D surface plane coordinate system for neuron positions.")
+		return
 
-	neuronCoords = network.geometry.surfacePlaneCoords
+	connectivityWeights = connectivityMatrix if connectivityMatrix is not None else (network.connectionWeights_synExcit - network.connectionWeights_synInhib) # synapse weights
 
 	neuronsDataframe 	= network.get_neurons_dataframe()
 

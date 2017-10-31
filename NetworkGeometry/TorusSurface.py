@@ -11,6 +11,8 @@ class TorusSurface(NetworkGeometry):
 	# Flags indicating the surface plane dimensions that have torroidal wrapping:
 	torroidal = [True, True]
 
+	geometry = "TorusSurface"
+
 	def __init__(self, r_major=None, r_minor=None, w=None, h=None, origin=None):
 
 		NetworkGeometry.__init__(self)

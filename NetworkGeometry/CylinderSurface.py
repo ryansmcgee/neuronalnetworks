@@ -8,6 +8,8 @@ class CylinderSurface(NetworkGeometry):
 
 	numDimensions = 2
 
+	geometry = "CylinderSurface"
+
 	# Flags indicating the surface plane dimensions that have torroidal wrapping:
 	torroidal = [True, False]
 
@@ -254,7 +256,7 @@ class CylinderSurface(NetworkGeometry):
 						else:
 							exitOnNetworkGeometryError("The given coord "+str(coord)+" falls outside the bounds of the geometry or the specified interval.")
 					else:
-						exitOnNetworkGeometryError("The dimensionality of given coordinate(s) ("+str(len(coord))+") does not match the parametric dimensionality of the geometry \'"+str(self.geometry)+"\' ("+str(CylinderSurface.numDimensions)+")")
+						exitOnNetworkGeometryError("The dimensionality of given coordinate(s) ("+str(len(coord))+") does not match the parametric dimensionality of the CylinderSurface geometry ("+str(CylinderSurface.numDimensions)+")")
 			else:
 				exitOnNetworkGeometryError("The number of given coordinate tuples ("+str(len(coords))+") does not match the given number of neuron IDs to position ("+str(numNeuronsToPosition)+")")
 
@@ -273,7 +275,7 @@ class CylinderSurface(NetworkGeometry):
 						else:
 							exitOnNetworkGeometryError("The given coord "+str(coord)+" falls outside the bounds of the geometry or the specified interval.")
 					else:
-						exitOnNetworkGeometryError("The dimensionality of given coordinate(s) ("+str(len(coord))+") does not match the parametric dimensionality of the geometry \'"+str(self.geometry)+"\' ("+str(CylinderSurface.numDimensions)+")")
+						exitOnNetworkGeometryError("The dimensionality of given coordinate(s) ("+str(len(coord))+") does not match the parametric dimensionality of the CylinderSurface geometry ("+str(CylinderSurface.numDimensions)+")")
 			else:
 				exitOnNetworkGeometryError("The number of given coordinate tuples ("+str(len(coords))+") does not match the given number of neuron IDs to position ("+str(numNeuronsToPosition)+")")
 

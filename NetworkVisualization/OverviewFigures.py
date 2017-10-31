@@ -134,6 +134,10 @@ def LIF_network_overview_figure(network, synapseDiagram2D=False, gapjunctionDiag
 def network_overview_figure(network, synapseDiagram2D=False, gapjunctionDiagram2D=False, spikerateDiagram2D=False):
 	simsummaryFigure = pyplot.figure(figsize=(16,10))
 
+	if(not hasattr(network.geometry, 'surfacePlaneCoords')):
+		print("The "+str(network.geometry.geometry)+" geometry class does not define a 2D surface plane coordinate system for neuron positions. Defaulting to 3D visualizations.")
+		synapseDiagram2D = gapjunctionDiagram2D = spikerateDiagram2D = False
+
 	gs1 = gridspec.GridSpec(12, 9)
 	gs1.update(left=0.02, right=0.6, wspace=0.05, top=0.98, bottom=0.02, hspace=1.0)
 	ax_raster = pyplot.subplot(gs1[0:5, :])
@@ -248,7 +252,7 @@ def network_overview_figure(network, synapseDiagram2D=False, gapjunctionDiagram2
 		spikeTimes 	= network.get_spike_times()
 		ax_n.scatter(x=spikeTimes[nID], y=neuronsDataFrame.loc[((neuronsDataFrame['neuron_id']==nID)&(neuronsDataFrame['t'].isin(spikeTimes[nID]))), 'V'].values, marker='^', c='k', edgecolors='none')
 		# exit()
-		
+
 
 
 	gs1.tight_layout(simsummaryFigure, rect=[0, 0, 0.6, 1])

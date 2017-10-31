@@ -17,6 +17,8 @@ from NetworkModels.LIFNetwork import LIFNetwork
 from NetworkModels.FHNNetwork import FHNNetwork
 from NetworkGeometry.CylinderSurface import CylinderSurface
 from NetworkGeometry.TorusSurface import TorusSurface
+from NetworkGeometry.PlaneSurface import PlaneSurface
+from NetworkGeometry.SpheroidSurface import SpheroidSurface
 from NetworkConnectivity.NetworkConnectivity import *
 from NetworkInput.ConstantInput import ConstantInput
 
@@ -25,14 +27,16 @@ from NetworkVisualization.OverviewFigures import *
 
 import numpy as numpy
 
-numpy.random.seed(69000)
+numpy.random.seed(6900034)
 
 network 	= FHNNetwork()
 
 # network.geometry = CylinderSurface(r=1, h=3)
 # network.geometry = CylinderSurface(w=10, h=10)
 # network.geometry = TorusSurface(r_major=3, r_minor=1.5)
-network.geometry = TorusSurface(w=10, h=10)
+# network.geometry = TorusSurface(w=10, h=10)
+# network.geometry = PlaneSurface(x=10, y=10)
+network.geometry = SpheroidSurface(r_xy=15, r_z=15)
 
 
 N_excit = 80	#numpy.random.randint(low=2, high=200)
@@ -40,13 +44,13 @@ N_inhib = 20
 
 
 network.add_neurons(numNeuronsToAdd=N_excit,
-					V_init=-1.1994, V_peak=1.45, V_eqExcit=2.0, V_eqInhib=-1.25, 
+					V_init=-1.1994, V_peak=1.45, V_eqExcit=2.0, V_eqInhib=-1.25,
 					W_init=-0.6243, a=0.7, b=0.8,
 					g_excit_init=0.0, g_inhib_init=0.0, g_gap=0.5, tau_g_excit=2.0, tau_g_inhib=2.0, tau_W=12.5,
 					synapse_type='excitatory', label='')
 
 network.add_neurons(numNeuronsToAdd=N_inhib,
-					V_init=-1.1994, V_peak=1.5, V_eqExcit=0.0, V_eqInhib=-1.25, 
+					V_init=-1.1994, V_peak=1.5, V_eqExcit=0.0, V_eqInhib=-1.25,
 					W_init=-0.6243, a=0.7, b=0.8,
 					g_excit_init=0.0, g_inhib_init=0.0, g_gap=0.5, tau_g_excit=2.0, tau_g_inhib=2.0, tau_W=12.5,
 					synapse_type='inhibitory', label='')
@@ -54,8 +58,8 @@ network.add_neurons(numNeuronsToAdd=N_inhib,
 neuronIDs_excit = numpy.where(network.neuronSynapseTypes == 'excitatory')[0]
 neuronIDs_inhib = numpy.where(network.neuronSynapseTypes == 'inhibitory')[0]
 
-# network.geometry.position_neurons(positioning='even')
-network.geometry.position_neurons(positioning='random')
+network.geometry.position_neurons(positioning='even')
+# network.geometry.position_neurons(positioning='random')
 
 
 
