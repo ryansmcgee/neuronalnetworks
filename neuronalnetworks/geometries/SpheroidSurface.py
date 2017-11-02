@@ -150,13 +150,15 @@ class SpheroidSurface(NetworkGeometry):
 		# Define effective positioning intervals according to bounds given in this method call:
 		#---------------------------------------------------------------------------------------
 		# Initialize intervals to the full range of the constructed geometry:
-		intervals 	= { 'theta':(-1*numpy.pi, numpy.pi), 'phi':(-1*numpy.pi/2, numpy.pi/2) }  #[[-180deg, 180deg], [-90deg, 90deg]]
+		intervals 	= { 'theta':[-1*numpy.pi, numpy.pi], 'phi':[-1*numpy.pi/2, numpy.pi/2] }  #[[-180deg, 180deg], [-90deg, 90deg]]
 		if('theta' in bounds.keys()):
 			intervals['theta'][LO] = min( max(bounds['theta'][LO], -1*numpy.pi), numpy.pi )
 			intervals['theta'][HI] = max( min(bounds['theta'][HI], numpy.pi), -1*numpy.pi )
 		if('phi' in bounds.keys()):
-			intervals['theta'][LO] = min( max(bounds['theta'][LO], -1*numpy.pi/2), numpy.pi/2 )
-			intervals['theta'][HI] = max( min(bounds['theta'][HI], numpy.pi/2), -1*numpy.pi/2 )
+			intervals['phi'][LO] = min( max(bounds['phi'][LO], -1*numpy.pi/2), numpy.pi/2 )
+			intervals['phi'][HI] = max( min(bounds['phi'][HI], numpy.pi/2), -1*numpy.pi/2 )
+
+		# print intervals
 
 		# If no neuron IDs were specified, default to positioning all neurons in the network:
 		if(neuronIDs is None):
@@ -198,10 +200,15 @@ class SpheroidSurface(NetworkGeometry):
 					# Use the calculated probability of acceptance to determine if this point is accepted/rejected:
 					if(numpy.random.uniform(low=0, high=1) < prob_accept):
 						# This randomly generated point has been accepted as a random point on our ellipsoid.
-						# Store the spherical coordinates representing this point:
-						self.parametricCoords[nID][0]	= randTheta - numpy.pi
-						self.parametricCoords[nID][1]	= randPhi - numpy.pi/2
-						acceptableRandPosGenerated	= True
+						# Store the spherical coordinates representing this point, IF it is also within the given bounds:
+						theta	= randTheta - numpy.pi
+						phi		= randPhi - numpy.pi/2
+						if(intervals['theta'][LO] <= theta and theta <= intervals['theta'][HI] and intervals['phi'][LO] <= phi and phi <= intervals['phi'][HI]):
+							self.parametricCoords[nID][0]	= theta
+							self.parametricCoords[nID][1]	= phi
+							acceptableRandPosGenerated	= True
+						else:
+							pass
 					else:
 						# This randomly generated point has been rejected as a random point on our ellipsoid.
 						# Try again:
@@ -226,11 +233,12 @@ class SpheroidSurface(NetworkGeometry):
 			n_lat 	= numpy.ceil( numNeuronsToPosition / n_lon)	# num rows along
 			# 2) Calculate the angle between each latitudinal "row" and between each longitudinal "column":
 			d_lon 	= int_lon / n_lon		# For torroidal wrapping longitudinally, there are n_lon gaps between longitudinal columns
-			d_lat 	= int_lat / (n_lat+1)	# There must be space above/below the top/bottom rows so that neurons are not piled on the poles (also no torroidal wrapping latitudinally) so there are n_lat+1 gaps between latitudinal rows
+			d_lat 	= int_lat / (n_lat+1) if (intervals['phi'] == [-1*numpy.pi/2, numpy.pi/2]) else int_lat / (n_lat-1)	# There must be space above/below the top/bottom rows so that neurons are not piled on the poles (also no torroidal wrapping latitudinally) so there are n_lat+1 gaps between latitudinal rows
 			# 3) Iterate through this evenly spaced grid assigning positions to neurons:
 			for i, nID in enumerate(neuronIDs):
 				# Determine the row and col index for the ith neuron to be placed:
-				r_i = (i // n_lon) + 1 	# we need to add 1 to the r_i multiplier so that no row is at 0*d_lat, which would pile neurons on the pole
+				r_i = (i // n_lon)
+				r_i = r_i+1 if (intervals['phi'] == [-1*numpy.pi/2, numpy.pi/2]) else r_i 	# we need to add 1 to the r_i multiplier so that no row is at 0*d_lat, which would pile neurons on the pole
 				c_i = i % n_lon
 				self.parametricCoords[nID][0] = c_i*d_lon
 				self.parametricCoords[nID][1] = intervals['phi'][LO] + r_i*d_lat

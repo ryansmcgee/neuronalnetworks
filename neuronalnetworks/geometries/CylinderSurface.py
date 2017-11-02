@@ -127,11 +127,11 @@ class CylinderSurface(NetworkGeometry):
 				theta 	= coord[0]
 				h 		= coord[1]
 				w 		= self.r*theta
-				print "----------------"
-				print "theta "+str(theta)
-				print "h "+str(h)
-				print "r "+str(self.r)
-				print "w "+str(w)
+				# print "----------------"
+				# print "theta "+str(theta)
+				# print "h "+str(h)
+				# print "r "+str(self.r)
+				# print "w "+str(w)
 				planeCoords[i][0] = w
 				planeCoords[i][1] = h
 
@@ -183,7 +183,7 @@ class CylinderSurface(NetworkGeometry):
 		# Define effective positioning intervals according to bounds given in this method call:
 		#---------------------------------------------------------------------------------------
 		# Initialize intervals to the full range of the constructed geometry:
-		intervals 	= { 'theta':(0, 2*numpy.pi), 'h':(0, self.h), 'w':(0, self.w) }
+		intervals 	= { 'theta':(0, 2*numpy.pi), 'h':[0, self.h], 'w':[0, self.w] }
 		if('theta' in bounds.keys()):
 			intervals['theta'][LO] = min( max(bounds['theta'][LO], 0), 2*numpy.pi )
 			intervals['theta'][HI] = max( min(bounds['theta'][HI], 2*numpy.pi), 0 )
