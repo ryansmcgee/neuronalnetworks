@@ -111,7 +111,7 @@ W_synG 	= generate_connectivity_matrix(N=network.N, adjacencyScheme='nearest_nei
 
 network.set_synaptic_connectivity(connectivity=W_synE, synapseType='e', updateNeurons=neuronIDs_excit)
 network.set_synaptic_connectivity(connectivity=W_synI, synapseType='i', updateNeurons=neuronIDs_inhib)
-# network.set_gapjunction_connectivity(connectivity=W_synG)
+network.set_gapjunction_connectivity(connectivity=W_synG)
 
 # print network.geometry.distances
 
@@ -122,7 +122,7 @@ network.set_synaptic_connectivity(connectivity=W_synI, synapseType='i', updateNe
 
 network.initialize_simulation(T_max=100, deltaT=0.1)
 
-
+print "start sim"
 # while(network.t < (network.T_max-(network.deltaT/2))):	# The right-hand-side of this conditional is what it is rather than just T_max to avoid numerical roundoff errors causing unexpected conditional outcomes
 while(network.sim_state_valid()):
 
@@ -133,7 +133,7 @@ while(network.sim_state_valid()):
 	network.sim_step()
 
 	# break
-
+print "end sim"
 # network.get_neurons_dataframe().to_csv('debugging.txt', sep='\t')
 
 # exit()

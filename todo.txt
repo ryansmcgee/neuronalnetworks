@@ -1,7 +1,0 @@
-Clean up module imports
-
-Add rotation transform to geometries
-
-Test placing neurons on intervals for each geometry
-
-Test placing neurons at list of given positions

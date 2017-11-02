@@ -4,7 +4,8 @@ import numpy as numpy
 import pandas as pandas
 # import seaborn as seaborn
 import matplotlib
-matplotlib.use('Agg') # For running matplotlib through ssh. Must be before importing matplotlib.pyplot or pylab!
+# matplotlib.use('TkAgg')
+# matplotlib.use('Agg') # For running matplotlib through ssh. Must be before importing matplotlib.pyplot or pylab!
 from matplotlib import pyplot as pyplot
 import time
 
@@ -24,9 +25,9 @@ experimentData	= []
 
 counter = 0
 
-numReps	= 5
-k_vals = [0,1,2,3,4,5,6,7,8]
-c_vals = numpy.arange(0.0, 1.0, 0.025)
+numReps	= 1#5
+k_vals = [3]#[0,1,2,3,4,5,6,7,8]
+c_vals = numpy.arange(0.0, 1.0, 0.05)
 for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
 	for idx_c, _CUR_GAP_C_W_ in enumerate(c_vals):
 		for rep in range(numReps):
@@ -77,7 +78,7 @@ for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
 			network.set_synaptic_connectivity(connectivity=W_synE, synapseType='e', updateNeurons=neuronIDs_excit)
 			network.set_gapjunction_connectivity(connectivity=W_synG)
 
-			network.initialize_simulation(T_max=1000, deltaT=0.5)
+			network.initialize_simulation(T_max=10, deltaT=0.5)
 
 			simStartTime = time.time()
 			while(network.sim_state_valid()):
@@ -113,11 +114,16 @@ for idx_k, _CUR_GAP_K_ in enumerate(k_vals):
 			if(_CUR_GAP_K_ == numpy.median(k_vals) and _CUR_GAP_C_W_ == numpy.sort(c_vals)[1] and rep == 0):
 				representativeNetwork = network
 
-			# network_overview_figure(network, synapseDiagram2D=True, gapjunctionDiagram2D=True, spikerateDiagram2D=True)
+			# axx = pyplot.subplot(projection='3d')
+			# synapse_network_diagram_3d(axx, network)
 
-			# pyplot.show()
+			network_overview_figure(network, synapseDiagram2D=False, gapjunctionDiagram2D=False, spikerateDiagram2D=False)
 
-			# exit()
+
+
+			pyplot.show()
+
+			exit()
 
 
 

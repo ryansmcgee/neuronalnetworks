@@ -129,7 +129,7 @@ network.set_gapjunction_connectivity(connectivity=W_synG)
 
 
 
-network.initialize_simulation(T_max=100, deltaT=0.5)
+network.initialize_simulation(T_max=10, deltaT=0.5)
 
 
 # while(network.t < (network.T_max-(network.deltaT/2))):	# The right-hand-side of this conditional is what it is rather than just T_max to avoid numerical roundoff errors causing unexpected conditional outcomes
@@ -194,9 +194,9 @@ while(network.sim_state_valid()):
 
 # synapse_network_diagram_2d(axsyn2d, network)
 
-# figsyn3d, axsyn3d = pyplot.subplots()
+axsyn3d = pyplot.subplot(projection='3d')
 
-# synapse_network_diagram_3d(axsyn3d, network)
+synapse_network_diagram_3d(axsyn3d, network)
 
 # figgap2d, axgap2d = pyplot.subplots()
 
@@ -229,7 +229,7 @@ while(network.sim_state_valid()):
 
 # exit()
 
-network_overview_figure(network, synapseDiagram2D=True, gapjunctionDiagram2D=True, spikerateDiagram2D=True)
+# network_overview_figure(network, synapseDiagram2D=True, gapjunctionDiagram2D=True, spikerateDiagram2D=True)
 
 # pyplot.savefig('_____.png', bbox_inches='tight')
 
