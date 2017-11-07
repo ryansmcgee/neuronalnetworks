@@ -2,7 +2,7 @@
 
 # import numpy as numpy
 # import pandas as pandas
-from matplotlib import pyplot as pyplot
+# from matplotlib import pyplot as pyplot
 
 # import matplotlib.gridspec as gridspec
 
@@ -13,14 +13,10 @@ from matplotlib import pyplot as pyplot
 # import NetworkConnectivity
 # from NetworkVisualization.MidpointNormalize import MidpointNormalize
 
-from NetworkModels.LIFNetwork import LIFNetwork
-from NetworkGeometry.CylinderSurface import CylinderSurface
-from NetworkGeometry.TorusSurface import TorusSurface
-from NetworkConnectivity.NetworkConnectivity import *
-from NetworkInput.ConstantInput import ConstantInput
+from os import chdir
+chdir('/home/ryan/neuronalnetworks/')    # Navigate to the path containing the package directory from this script location
 
-from NetworkVisualization.NetworkPlots import *
-from NetworkVisualization.OverviewFigures import *
+from neuronalnetworks import *
 
 import numpy as numpy
 

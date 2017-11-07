@@ -10,6 +10,7 @@ from neuronalnetworks.geometries.SpheroidSurface import SpheroidSurface
 from neuronalnetworks.connectivities.connectivity_generation import *
 
 from neuronalnetworks.inputs.ConstantInput import ConstantInput
+from neuronalnetworks.inputs.LinearInput import LinearInput
 from neuronalnetworks.inputs.PulseInput import PulseInput
 from neuronalnetworks.inputs.SinusoidalInput import SinusoidalInput
 

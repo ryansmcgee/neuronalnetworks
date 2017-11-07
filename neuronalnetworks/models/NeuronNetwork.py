@@ -395,13 +395,12 @@ class NeuronNetwork(object):
 	def get_neuron_ids(self, synapseTypes=None, labels=None):
 		if(synapseTypes is None):
 			synapseTypes	= numpy.unique(self.neuronSynapseTypes)
+		elif(isinstance(synapseTypes, basestring)):
+			synapseTypes 	= [synapseTypes]
 		if(labels is None):
 			labels 			= numpy.unique(self.neuronLabels)
-
-		# Old string equality, rather than string inclusion, version
-		# indices_selectedSynTypes	= numpy.in1d(self.neuronSynapseTypes, synapseTypes)
-		# indices_selectedLabels		= numpy.in1d(self.neuronLabels, labels)
-
+		elif(isinstance(labels, basestring)):
+			labels 			= [labels]
 
 		indices_selectedSynTypes 	= numpy.asarray( [True if any((t in syntype and t!='') or (t==syntype=='') for t in synapseTypes) else False for syntype in self.neuronSynapseTypes] )
 		indices_selectedLabels 		= numpy.asarray( [True if any((l in label and l!='') or (l==label=='') for l in labels) else False for label in self.neuronLabels] )

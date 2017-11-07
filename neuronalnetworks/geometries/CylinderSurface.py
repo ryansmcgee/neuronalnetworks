@@ -44,6 +44,43 @@ class CylinderSurface(NetworkGeometry):
 		self.origin 	= origin if (origin is not None) else numpy.zeros(3)
 
 
+	def set_r(self, r):
+		self.r = r
+		# Calculate the surface plane width (w) equivalent to given radius (r):
+		self.w = 2*numpy.pi * self.r
+
+		# Parametric coordinates do not change when updating radius; use parametric coords and new radius parameter to find new surfacePlane and cartesian coords:
+		self.surfacePlaneCoords = self.convert_to_surfaceplane_coords(self.parametricCoords, 'parametric')
+		self.cartesianCoords = self.convert_to_cartesian_coords(self.parametricCoords, 'parametric')
+		# Recalculate distances uder new geometry parameters and coords:
+		self.calculate_distances()
+
+
+	def set_h(self, h):
+		dhFactor = h/self.h
+
+		self.h = h
+		# Adjust existing points' height coords proportionally to the change in height of the geometry:
+		self.cartesianCoords[:,2] 		*= dhFactor
+		self.surfacePlaneCoords[:,2] 	*= dhFactor
+		self.parametricCoords[:,2] 		*= dhFactor
+
+		# Recalculate distances uder new geometry parameters and coords:
+		self.calculate_distances()
+
+
+	def set_w(self, w):
+		self.w = w
+		# Calculate the radius (r) equivalent to given surface plane width (w):
+		self.r = self.w / (2*numpy.pi)
+
+		# Parametric coordinates do not change when updating width; use parametric coords and new radius parameter to find new surfacePlane and cartesian coords:
+		self.surfacePlaneCoords = self.convert_to_surfaceplane_coords(self.parametricCoords, 'parametric')
+		self.cartesianCoords = self.convert_to_cartesian_coords(self.parametricCoords, 'parametric')
+		# Recalculate distances uder new geometry parameters and coords:
+		self.calculate_distances()
+
+
 	def convert_to_parametric_coords(self, origCoords, origCoordType='cartesian'):
 
 		paramCoords = numpy.full(shape=[len(origCoords), CylinderSurface.numDimensions], fill_value=numpy.nan)
