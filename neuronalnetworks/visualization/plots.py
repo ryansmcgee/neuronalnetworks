@@ -130,10 +130,14 @@ def traces_plot(ax, x, y1_traces=None, y2_traces=None, x_lim=None, y1_lim=None, 
 	return ax
 
 
-def spike_raster_plot(ax, network):
+def spike_raster_plot(ax, network, colorSynapseTypes=True, colorIOTypes=True):
 	spikeTimes 	= network.get_spike_times()
 	for n, spike_t in enumerate(spikeTimes):
-		ax.vlines(x=spike_t, ymin=n+0.5, ymax=n+1.5)
+		if(colorSynapseTypes or colorIOTypes):
+			color = ('green' if(colorIOTypes and 'input' in network.neuronLabels[n]) else 'darkorange' if(colorIOTypes and 'output' in network.neuronLabels[n])
+					else 'midnightblue' if (colorSynapseTypes and 'excitatory' in network.neuronSynapseTypes[n]) else 'maroon' if(colorSynapseTypes and 'inhibitory' in network.neuronSynapseTypes[n])
+					else 'k')
+		ax.vlines(x=spike_t, ymin=n+0.5, ymax=n+1.5, color=color)
 	ax.set_ylim(0.5, len(spikeTimes) + 0.5)
 	ax.set_xlim(0, network.T_max)
 	ax.set_yticks([] if network.N > 50 else range(1, network.N+1))
@@ -144,7 +148,7 @@ def spike_raster_plot(ax, network):
 	ax.invert_yaxis()
 
 
-def synapse_network_diagram_2d(ax, network, showAxes=False):
+def synapse_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=True):
 
 	try:
 		neuronCoords = network.geometry.surfacePlaneCoords
@@ -337,7 +341,8 @@ def synapse_network_diagram_2d(ax, network, showAxes=False):
 	# ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c='blue', edgecolors='darkorange', linewidths=2, s=2*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 	# ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c='blue', edgecolors='darkorange', linewidths=2, s=2*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 
-	ax.set_aspect('equal', 'datalim')
+	if(truePlaneDimensions):
+		ax.set_aspect('equal', 'datalim')
 
 	margin_w = 0.02*w
 	margin_h = 0.02*h
@@ -426,7 +431,7 @@ def synapse_network_diagram_3d(ax, network):
 	return ax
 
 
-def gapjunction_network_diagram_2d(ax, network, showAxes=False):
+def gapjunction_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=True):
 
 	try:
 		neuronCoords = network.geometry.surfacePlaneCoords
@@ -627,7 +632,8 @@ def gapjunction_network_diagram_2d(ax, network, showAxes=False):
 	# ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c='blue', edgecolors='darkorange', linewidths=2, s=2*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 	# ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c='blue', edgecolors='darkorange', linewidths=2, s=2*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 
-	ax.set_aspect('equal', 'datalim')
+	if(truePlaneDimensions):
+		ax.set_aspect('equal', 'datalim')
 
 	margin_w = 0.02*w
 	margin_h = 0.02*h
@@ -702,6 +708,7 @@ def gapjunction_network_diagram_3d(ax, network):
 
 	axesGridColor	= (0.95, 0.95, 0.95, 1.0)
 	axesPaneColor 	= (0.99, 0.99, 0.99, 1.0)
+	ax.w_zaxis.line.set_lw(0.)
 	ax.w_xaxis.set_pane_color(axesPaneColor)
 	ax.w_yaxis.set_pane_color(axesPaneColor)
 	ax.w_zaxis.set_pane_color(axesPaneColor)
@@ -715,7 +722,7 @@ def gapjunction_network_diagram_3d(ax, network):
 	return ax
 
 
-def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, dark=False, showAxes=False):
+def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, dark=False, showAxes=False, truePlaneDimensions=True):
 
 	try:
 		neuronCoords = network.geometry.surfacePlaneCoords
@@ -943,9 +950,10 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 	# ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c='blue', edgecolors='darkorange', linewidths=2, s=2*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 	# ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c='blue', edgecolors='darkorange', linewidths=2, s=2*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 
-	ax.set_aspect('equal', 'datalim')
+	if(truePlaneDimensions):
+		ax.set_aspect('equal', 'datalim')
 
-	ax.set_axis_bgcolor(backgroundColor)
+	ax.set_facecolor(backgroundColor)
 
 	margin_w = 0.02*w
 	margin_h = 0.02*h
@@ -1000,9 +1008,9 @@ def rate_network_diagram_3d(ax, network, connectivityMatrix=None, basisT=1000, d
 	# Calculate the index into the colormap range for each rate:
 	neuronRateCmapping = numpy.abs(neuronsSpikeRates-minRate)/abs(maxRate-minRate)
 
-	print neuronsNumSpikes
+	# print neuronsNumSpikes
 
-	print neuronsSpikeRates
+	# print neuronsSpikeRates
 
 	#~~~~~~~~~~~~~~~~~~~~
 	# Render the diagram:
@@ -1057,12 +1065,15 @@ def rate_network_diagram_3d(ax, network, connectivityMatrix=None, basisT=1000, d
 	for xb, yb, zb in zip(Xb, Yb, Zb):
 	   ax.plot([xb], [yb], [zb], 'w')
 
-	ax.w_xaxis.set_pane_color(axesBackgroundColor)
-	ax.w_yaxis.set_pane_color(axesBackgroundColor)
-	ax.w_zaxis.set_pane_color(axesBackgroundColor)
-	ax.w_xaxis._axinfo.update({'grid' : {'color': axesBorderColor}})
-	ax.w_yaxis._axinfo.update({'grid' : {'color': axesBorderColor}})
-	ax.w_zaxis._axinfo.update({'grid' : {'color': axesBorderColor}})
+	axesGridColor	= (0.95, 0.95, 0.95, 1.0)
+	axesPaneColor 	= (0.99, 0.99, 0.99, 1.0)
+	ax.w_zaxis.line.set_lw(0.)
+	ax.w_xaxis.set_pane_color(axesPaneColor)
+	ax.w_yaxis.set_pane_color(axesPaneColor)
+	ax.w_zaxis.set_pane_color(axesPaneColor)
+	# ax.w_xaxis._axinfo.update({'grid' : {'color': axesGridColor}})
+	# ax.w_yaxis._axinfo.update({'grid' : {'color': axesGridColor}})
+	# ax.w_zaxis._axinfo.update({'grid' : {'color': axesGridColor}})
 
 	ax.autoscale(tight=True)
 

@@ -22,8 +22,10 @@ network = IzhikevichNetwork()
 N_excit = 100    # number of excitatory neurons
 N_inhib = 20    # number of inhibitory neurons
 
+Vttt = -40.0
+
 network.add_neurons(numNeuronsToAdd=N_excit,
-    V_init=-65.0, V_r=-60.0, V_t=-40.0, V_peak=30.0, V_reset=-65, V_eqExcit=0.0, V_eqInhib=-70.0,
+    V_init=-65.0, V_r=-60.0, V_t=Vttt, V_peak=30.0, V_reset=-65, V_eqExcit=0.0, V_eqInhib=-70.0,
     U_init=0.0, a=0.02, b=0.2, d=8, k=0.7, R_membrane=0.01,
     g_excit_init=0.0, g_inhib_init=0.0, g_gap=1.0, tau_g_excit=2.0, tau_g_inhib=2.0,
     synapse_type='excitatory')
@@ -94,9 +96,12 @@ print numpy.count_nonzero(W_synE[:N_excit,:])
 print numpy.count_nonzero(W_synE[:N_excit,:])/N_excit
 # exit()
 
+squee = 40.0 	# 40.0
+squig = 2.0		# 5.0
+
 W_synI = generate_connectivity_vectors(neuronIDs=neuronIDs_inhib, N=network.N, adjacencyScheme='distance_probability', initWeightScheme='distance',
 							            args={'adj_prob_dist_fn':'exponential', 'p0_a':1.0, 'sigma_a':0.6,
-							                  'init_weight_dist_fn':'exponential', 'p0_w':40, 'sigma_w':5.0,
+							                  'init_weight_dist_fn':'exponential', 'p0_w':squee, 'sigma_w':squig,
 							                  'distances':network.geometry.distances[neuronIDs_inhib]} )
 
 print numpy.count_nonzero(W_synI[:N_inhib,:])
@@ -182,7 +187,7 @@ network.set_input_connectivity(connectivity=W_inp)
 
 
 
-network.initialize_simulation(T_max=500, deltaT=0.5)
+network.initialize_simulation(T_max=1000, deltaT=0.5)
 # network.initialize_simulation(T_max=50, deltaT=0.1)
 
 
@@ -190,12 +195,30 @@ R_baseline 	= network.geometry.r
 dRdt	 	= 0.005
 r_temp      = R_baseline
 
+T_rateSampleWindow = 25
+outputSpikeCounts = [0 for n in range(int(T_rateSampleWindow/network.deltaT))]
+inputSpikeCounts = [0 for n in range(int(T_rateSampleWindow/network.deltaT))]
+inputSpikeRate = 0
+outputSpikeRate = 0
+
+log_radius = numpy.zeros(network.numTimeSteps+1)
+log_inputRates = numpy.zeros(network.numTimeSteps+1)
+log_outputRates = numpy.zeros(network.numTimeSteps+1)
+
+log_radius[network.timeStepIndex] = network.geometry.r
+log_inputRates[network.timeStepIndex] = inputSpikeRate
+log_outputRates[network.timeStepIndex] = outputSpikeRate
+
 print "sim start"
 while(network.sim_state_valid()):
 
 	# newtime_start = time.time()
 
 	print "tttttt = " + str( network.t )
+
+	# log_radius[network.timeStepIndex] = network.geometry.r
+	# log_inputRates[network.timeStepIndex] = inputSpikeRate
+	# log_outputRates[network.timeStepIndex] = outputSpikeRate
 
 	network.geometry.set_r(network.geometry.r+dRdt)
 
@@ -211,7 +234,7 @@ while(network.sim_state_valid()):
 
 	W_synI = generate_connectivity_vectors(neuronIDs=neuronIDs_inhib, N=network.N, adjacencyScheme='given', initWeightScheme='distance',
 															args={	'given_adj':network.connectionWeights_synInhib[neuronIDs_inhib],
-																	'init_weight_dist_fn':'exponential', 'p0_w':10000, 'sigma_w':10000,
+																	'init_weight_dist_fn':'exponential', 'p0_w':squee, 'sigma_w':squig,
 							                  						'distances': network.geometry.distances[neuronIDs_inhib] } )
 
 
@@ -233,14 +256,53 @@ while(network.sim_state_valid()):
 
 	# oldtime_start = time.time()
 
-	r_temp += dRdt
-	network.set_input_vals( vals=[constantInput.val(network.t), 100*(r_temp - R_baseline)] )
+
+
+	# r_temp += dRdt
+	network.set_input_vals( vals=[constantInput.val(network.t), 100*(network.geometry.r - R_baseline)] )
 
 	network.sim_step()
+
+	# print "spkspkspk"
+	# print network.spikeEvents
+	
+	outputSpikeCounts.pop(0)
+	outputSpikeCounts.append(numpy.sum(network.spikeEvents[neuronIDs_outputs]))
+	outputSpikeRate = (sum(outputSpikeCounts)/len(neuronIDs_outputs))*(1000/(T_rateSampleWindow))
+
+	inputSpikeCounts.pop(0)
+	inputSpikeCounts.append(numpy.sum(network.spikeEvents[neuronIDs_inputs]))
+	inputSpikeRate = (sum(inputSpikeCounts)/len(neuronIDs_inputs))*(1000/(T_rateSampleWindow))
+
+	# print network.spikeEvents[neuronIDs_inputs]
+	# print numpy.sum(network.spikeEvents[neuronIDs_inputs]) 
+	# print sum(inputSpikeCounts)
+
+	print "input  rate = " +str(inputSpikeRate)
+	print "output rate = " + str(outputSpikeRate)
+	# print "kkkkk"
+
+	if(outputSpikeRate >= 30.0):
+		network.geometry.r = R_baseline
+
+	log_radius[network.timeStepIndex] = network.geometry.r
+	log_inputRates[network.timeStepIndex] = inputSpikeRate
+	log_outputRates[network.timeStepIndex] = outputSpikeRate
+	
 
 	# oldtime_end = time.time()
 	# print ("old: " + str(oldtime_end - oldtime_start))
 print "sim end"
+
+ax_radiusrates = pyplot.subplot()
+# traces_plot(ax_radiusrates, x=numpy.arange(0, network.T_max, network.deltaT), y1_traces=[log_inputRates, log_outputRates], y2_traces=[log_radius], 
+# 						x_axis_label='t', y1_axis_label='Rates', y2_axis_label='Radius',
+# 						y1_legend=True, y2_legend=False, fontsize=8, x_labelsize=6 )
+rAx1 = ax_radiusrates
+rAx2 = rAx1.twinx()
+rAx2.plot(log_radius)
+rAx1.plot(log_inputRates)
+rAx1.plot(log_outputRates)
 
 
 network_overview_figure(network, synapseDiagram2D=True, gapjunctionDiagram2D=True, spikerateDiagram2D=True)#, neuronIDs_traces=neuronIDs_inputs)

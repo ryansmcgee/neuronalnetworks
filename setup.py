@@ -15,6 +15,6 @@ setup(
    packages=['neuronalnetworks'],  #same as name
    install_requires=['numpy', 'matplotlib'], #external packages as dependencies
    scripts=[
-            'demos/tutorial.py'
+            'tutorial.py'
            ]
 )
