@@ -13,14 +13,7 @@ from matplotlib import pyplot as pyplot
 # import NetworkConnectivity
 # from NetworkVisualization.MidpointNormalize import MidpointNormalize
 
-from NetworkModels.LIFNetwork import LIFNetwork
-from NetworkModels.FHNNetwork import FHNNetwork
-from NetworkGeometry.CylinderSurface import CylinderSurface
-from NetworkConnectivity.NetworkConnectivity import *
-from NetworkInput.ConstantInput import ConstantInput
-
-from NetworkVisualization.NetworkPlots import *
-from NetworkVisualization.OverviewFigures import *
+from neuronalnetworks import *
 
 import numpy as numpy
 
@@ -89,17 +82,21 @@ network.neuronLabels[outputs_neuronIDs] = 'output'
 # 											} )
 W_synE 	= generate_connectivity_vectors(neuronIDs=neuronIDs_excit, N=network.N, adjacencyScheme='nearest_neighbors', initWeightScheme='uniform',
 										args={
-												'distances':network.geometry.distances,
+												'distances':network.geometry.distances[neuronIDs_excit],
 												'k':4,
 												'low':0.5, 'high':0.5
 										} )
 
+print "A"
+
 W_synI 	= generate_connectivity_vectors(neuronIDs=neuronIDs_inhib, N=network.N, adjacencyScheme='nearest_neighbors', initWeightScheme='uniform',
 										args={
-												'distances':network.geometry.distances,
+												'distances':network.geometry.distances[neuronIDs_excit],
 												'k':4,
 												'low':0.5, 'high':0.5
 										} )
+
+print 'B'
 
 W_synG 	= generate_connectivity_matrix(N=network.N, adjacencyScheme='nearest_neighbors', initWeightScheme='uniform',
 										args={
@@ -108,6 +105,7 @@ W_synG 	= generate_connectivity_matrix(N=network.N, adjacencyScheme='nearest_nei
 												'low':0.1, 'high':0.1
 										} )
 
+print "C"
 
 network.set_synaptic_connectivity(connectivity=W_synE, synapseType='e', updateNeurons=neuronIDs_excit)
 network.set_synaptic_connectivity(connectivity=W_synI, synapseType='i', updateNeurons=neuronIDs_inhib)

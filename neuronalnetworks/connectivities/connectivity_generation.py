@@ -241,9 +241,9 @@ def generate_connectivity_vectors(neuronIDs, N, adjacencyScheme, initWeightSchem
 		try:
 			allDistances	= numpy.copy( numpy.asarray(args['distances']) ) # deep copy the input distances matrix for future reference
 			if(allDistances.shape[0] != len(neuronIDs) or allDistances.shape[1] != N):
-				exit_on_connectivity_error("When using adjacencyScheme == ['nearest_neighbors'|'distance_probability'|'distance_threshold'] or initWeightScheme == 'distance', generateConnectivityMatrix() expects the 'args' method argument to hold a dictionary with the following key-value pairs: {'distances':<NxN list|numpy.ndarray>}")
+				exit_on_connectivity_error("When using adjacencyScheme == ['nearest_neighbors'|'distance_probability'|'distance_threshold'] or initWeightScheme == 'distance', generate_connectivity_vectors() expects the 'args' method argument to hold a dictionary with the following key-value pairs: {'distances':<len(neuronIDs)xN list|numpy.ndarray>}")
 		except KeyError:
-			exit_on_connectivity_error("When using adjacencyScheme == ['nearest_neighbors'|'distance_probability'|'distance_threshold'] or initWeightScheme == 'distance', generateConnectivityMatrix() expects the 'args' method argument to hold a dictionary with the following key-value pairs: {'distances':<NxN list|numpy.ndarray>}")
+			exit_on_connectivity_error("When using adjacencyScheme == ['nearest_neighbors'|'distance_probability'|'distance_threshold'] or initWeightScheme == 'distance', generate_connectivity_vectors() expects the 'args' method argument to hold a dictionary with the following key-value pairs: {'distances':<len(neuronIDs)xN list|numpy.ndarray>}")
 
 	usingGivenAdjacencies = False
 	if(adjacencyScheme.lower() == 'given'):

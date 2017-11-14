@@ -13,6 +13,7 @@ from neuronalnetworks.inputs.ConstantInput import ConstantInput
 from neuronalnetworks.inputs.LinearInput import LinearInput
 from neuronalnetworks.inputs.PulseInput import PulseInput
 from neuronalnetworks.inputs.SinusoidalInput import SinusoidalInput
+from neuronalnetworks.inputs.StepInput import StepInput
 
 from neuronalnetworks.visualization.plots import *
 from neuronalnetworks.visualization.figures import *

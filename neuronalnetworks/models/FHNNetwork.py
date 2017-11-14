@@ -346,6 +346,8 @@ class FHNNetwork(NeuronNetwork):
 			# V(t+1)=dVdt*dt + V(t);
 			# W(t+1)=dWdt*dt + W(t);
 
+			# print self.V
+
 			dVdt 	= self.V - (numpy.power(self.V,3)/3) - self.W + (self.I_excit + self.I_inhib + self.I_gap + self.I_input)
 			dWdt	= (1/self.tau_W)*(self.V + self.a - self.b*self.W)
 
