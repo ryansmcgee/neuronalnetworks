@@ -113,6 +113,7 @@ W_synE = generate_connectivity_vectors(neuronIDs=neuronIDs_excit, N=network.N, a
                                              'low':0.0, 'high':1.0,
                                              'distances':network.geometry.distances[neuronIDs_excit]} )
 
+# Stores the given matrix (in this case, W_synE, in the network.connectionWeights_synExcit variable)
 network.set_synaptic_connectivity(connectivity=W_synE, synapseType='e', updateNeurons=neuronIDs_excit)
 
 #~~~~~~~~~~
@@ -140,6 +141,7 @@ for nID in network.get_neuron_ids():
                                                args={'k':4,'low':0.75, 'high':1.25, 'distances':network.geometry.distances[int(nID)]}, 
                                                sparsity=heightPercentile )
 
+# Stores the given matrix (in this case, W_synG, in the network.connectionWeights_gap variable)
 network.set_gapjunction_connectivity(connectivity=W_synG)
 
 #~~~~~~~~~~
