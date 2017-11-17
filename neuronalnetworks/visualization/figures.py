@@ -1,7 +1,7 @@
 import numpy as numpy
 
 from matplotlib import pyplot as pyplot
-import matplotlib.gridspec as gridspec
+
 
 
 from plots import *
@@ -10,6 +10,8 @@ from plots import *
 
 
 def network_overview_figure(network, synapseDiagram2D=False, gapjunctionDiagram2D=False, spikerateDiagram2D=False, neuronIDs_traces=None):
+	import matplotlib.gridspec as gridspec
+
 	simsummaryFigure = pyplot.figure(figsize=(16,10))
 
 	if(not hasattr(network.geometry, 'surfacePlaneCoords')):
