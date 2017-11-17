@@ -4,7 +4,7 @@ import matplotlib.pyplot as pyplot
 import matplotlib.colors as colors
 import matplotlib.patches as patches
 import matplotlib.cm
-from mpl_toolkits.mplot3d.art3d import Line3DCollection
+# from mpl_toolkits.mplot3d.art3d import Line3DCollection    
 
 
 
@@ -370,7 +370,9 @@ def synapse_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=
 
 def synapse_network_diagram_3d(ax, network):
 
-	# ax = pyplot.axes(projection='3d')
+	from mpl_toolkits.mplot3d.art3d import Line3DCollection    
+
+	ax = pyplot.axes(projection='3d')
 
 	synapseWeights 	= network.connectionWeights_synExcit - network.connectionWeights_synInhib
 
@@ -661,7 +663,9 @@ def gapjunction_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensi
 
 def gapjunction_network_diagram_3d(ax, network):
 
-	# ax = pyplot.axes(projection='3d')
+	from mpl_toolkits.mplot3d.art3d import Line3DCollection    
+
+	ax = pyplot.axes(projection='3d')
 
 	gapjnWeights 	= network.connectionWeights_gap
 
@@ -981,7 +985,9 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 
 def rate_network_diagram_3d(ax, network, connectivityMatrix=None, basisT=1000, dark=False, showAxes=False):
 
-	# ax = pyplot.axes(projection='3d')
+	from mpl_toolkits.mplot3d.art3d import Line3DCollection    
+
+	ax = pyplot.axes(projection='3d')
 
 	connectivityWeights = connectivityMatrix if connectivityMatrix is not None else (network.connectionWeights_synExcit - network.connectionWeights_synInhib) # synapse weights
 

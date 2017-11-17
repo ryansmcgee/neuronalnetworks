@@ -2,7 +2,7 @@ import numpy as numpy
 
 from matplotlib import pyplot as pyplot
 import matplotlib.gridspec as gridspec
-from mpl_toolkits.mplot3d.art3d import Line3DCollection
+
 
 from plots import *
 

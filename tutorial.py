@@ -93,9 +93,11 @@ network.geometry.position_neurons(positioning='random', bounds={'h':[4,6]}, neur
 # Let's take a look at our network's geometry and neuron positions. 
 # (A number of network plots are provided, we use one here. Excitatory neurons are colored blue, inhibitory red):
 #~~~~~~~~~~
-axsyn3d = pyplot.subplot(projection='3d')
+axsyn3d = pyplot.subplot()
 synapse_network_diagram_3d(axsyn3d, network)
 pyplot.show()
+
+
 
 #~~~~~~~~~~
 # Distances between neurons in our network were already calculated when the neurons were positioned:
