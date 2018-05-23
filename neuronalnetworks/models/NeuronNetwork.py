@@ -295,6 +295,7 @@ class NeuronNetwork(object):
 		#~~~~~
 		# Initialize time related and length-of-simulation dependent variables and containers
 		#~~~~~
+		# print "t swries"
 		self.timeSeries 		= numpy.arange(0, self.T_max, self.deltaT)
 		self.numTimeSteps		= len(self.timeSeries)
 		self.timeStepIndex 		= 0
@@ -303,7 +304,7 @@ class NeuronNetwork(object):
 
 		for variable in self.neuronLogVariables:
 			self.neuronLogs[variable]['data'] = [[numpy.nan for t in range(self.numTimeSteps)] for n in range(self.N)]
-		# 	print self.neuronLogs
+			# print variable#self.neuronLogs
 		# print self.T_max
 		# print self.deltaT
 		# print self.timeSeries

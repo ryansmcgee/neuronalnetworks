@@ -228,6 +228,8 @@ class IzhikevichNetwork(NeuronNetwork):
 		#~~~~~~~~~~~~~~~~~~~~
 		# Log the current values of variables for which logging is enabled:
 		#~~~~~~~~~~~~~~~~~~~~
+		# print self.I_gap
+
 		for n in range(self.N):
 			if(self.neuronLogs['neuron_id']['enabled']):
 				self.neuronLogs['neuron_id']['data'][n][self.timeStepIndex]	= self.neuronIDs[n]
@@ -396,10 +398,5 @@ class IzhikevichNetwork(NeuronNetwork):
 
 
 	def get_spike_times(self):
-		df 	= self.get_neurons_dataframe()
-
-		spikeTimes	= []
-		for n in range(self.N):
-			spikeTimes.append( df.loc[((df['neuron_id'] == n) & (df['spike'] == 1)), 't'].values )
-
+		spikeTimes = [numpy.nonzero(self.neuronLogs['spike']['data'][nID])[0]*self.deltaT for nID in range(self.N)]
 		return spikeTimes

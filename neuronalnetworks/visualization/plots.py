@@ -1,3 +1,5 @@
+from __future__ import division
+
 import numpy as numpy
 
 import matplotlib.pyplot as pyplot
@@ -31,9 +33,7 @@ def input_connectivity_colormap(connectivityMatrix):
 
 
 # def traces_plot(ax, x_data, y1_data=None, y1_labels=None, y1_colors=None, y1_alphas=None, y1_linestyles=None, y2_data=None, y2_labels=None, y2_colors=None, y2_alphas=None, x_axis_label='', y_axis1_label='', fontsize=8, labelsize=6):
-def traces_plot(ax, x, y1_traces=None, y2_traces=None, x_lim=None, y1_lim=None, y2_lim=None,
-					x_axis_label='', y1_axis_label='', y2_axis_label='', y1_legend=False, y2_legend=False,
-					fontsize=8, x_labelsize=6, y1_labelsize=6, y2_labelsize=6):
+def traces_plot(ax, x, y1_traces=None, y2_traces=None, x_lim=None, y1_lim=None, y2_lim=None, x_axis_label='', y1_axis_label='', y2_axis_label='', y1_legend=False, y2_legend=False, fontsize=8, x_labelsize=6, y1_labelsize=6, y2_labelsize=6):
 
 	yAx1 = ax
 	yAx2 = yAx1.twinx()
@@ -148,7 +148,7 @@ def spike_raster_plot(ax, network, colorSynapseTypes=True, colorIOTypes=True):
 	ax.invert_yaxis()
 
 
-def synapse_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=True):
+def synapse_network_diagram_2d(ax, network, colorVoltages=False, showAxes=False, truePlaneDimensions=True, dark=False):
 
 	try:
 		neuronCoords = network.geometry.surfacePlaneCoords
@@ -168,8 +168,8 @@ def synapse_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=
 	except AttributeError:
 		torroidal = [False, False]
 
-	surfaceBorderColor 		= (0.7, 0.7, 0.7)
-	surfaceBackgroundColor 	= (0.99, 0.99, 0.99)
+	surfaceBorderColor 		= (0.7, 0.7, 0.7) if not dark else (0.3, 0.3, 0.3)
+	surfaceBackgroundColor 	= (0.99, 0.99, 0.99) if not dark else (0.0, 0.0, 0.0)
 	ax.add_patch(patches.Rectangle((0,0), w, h, facecolor=surfaceBackgroundColor, edgecolor='none', zorder=0))
 	ax.plot([0,0], [0,h], color=surfaceBorderColor, linestyle=(':' if torroidal[0] else '-'), zorder=1)
 	ax.plot([w,w], [0,h], color=surfaceBorderColor, linestyle=(':' if torroidal[0] else '-'), zorder=1)
@@ -179,6 +179,8 @@ def synapse_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=
 	maxWt = numpy.max(synapseWeights)
 	minWt = numpy.min(synapseWeights)
 	synWt_cmap = zero_midpoint_cmap(orig_cmap=matplotlib.cm.get_cmap('RdBu'), min_val=minWt, max_val=maxWt)
+
+	nodeVoltage_cmap 	= zero_midpoint_cmap(orig_cmap=matplotlib.cm.get_cmap('viridis'), min_val=numpy.min(network.V_eqInhib), max_val=numpy.max(network.V_peak))
 
 	for i in range(network.N):
 		for j in range(network.N):
@@ -327,12 +329,12 @@ def synapse_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=
 	# ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c='darkorange', edgecolors='k', linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 	# ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c='darkorange', edgecolors='k', linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 
-	ax.scatter(x=neuronCoords[neuronIDs_nonIOExcit,0], y=neuronCoords[neuronIDs_nonIOExcit,1], marker='o', c='midnightblue', edgecolors='none', zorder=3)
-	ax.scatter(x=neuronCoords[neuronIDs_nonIOInhib,0], y=neuronCoords[neuronIDs_nonIOInhib,1], marker='o', c='maroon', edgecolors='none', zorder=3)
-	ax.scatter(x=neuronCoords[neuronIDs_inputExcit,0], y=neuronCoords[neuronIDs_inputExcit,1], marker='^', c='limegreen', edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
-	ax.scatter(x=neuronCoords[neuronIDs_inputInhib,0], y=neuronCoords[neuronIDs_inputInhib,1], marker='^', c='limegreen', edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4)
-	ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c='darkorange', edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4)
-	ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c='darkorange', edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4)
+	ax.scatter(x=neuronCoords[neuronIDs_nonIOExcit,0], y=neuronCoords[neuronIDs_nonIOExcit,1], marker='o', c=(network.V[neuronIDs_nonIOExcit] if colorVoltages else 'midnightblue'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='none', s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=3)
+	ax.scatter(x=neuronCoords[neuronIDs_nonIOInhib,0], y=neuronCoords[neuronIDs_nonIOInhib,1], marker='o', c=(network.V[neuronIDs_nonIOInhib] if colorVoltages else 'maroon'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='none', s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=3)
+	ax.scatter(x=neuronCoords[neuronIDs_inputExcit,0], y=neuronCoords[neuronIDs_inputExcit,1], marker='^', c=(network.V[neuronIDs_inputExcit] if colorVoltages else 'limegreen'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
+	ax.scatter(x=neuronCoords[neuronIDs_inputInhib,0], y=neuronCoords[neuronIDs_inputInhib,1], marker='^', c=(network.V[neuronIDs_inputInhib] if colorVoltages else 'limegreen'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)
+	ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c=(network.V[neuronIDs_outputExcit] if colorVoltages else 'darkorange'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)
+	ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c=(network.V[neuronIDs_outputInhib] if colorVoltages else 'darkorange'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)
 
 	# ax.scatter(x=neuronCoords[neuronIDs_nonIOExcit,0], y=neuronCoords[neuronIDs_nonIOExcit,1], marker='o', c='blue', edgecolors='none', zorder=3)
 	# ax.scatter(x=neuronCoords[neuronIDs_nonIOInhib,0], y=neuronCoords[neuronIDs_nonIOInhib,1], marker='o', c='red', edgecolors='none', zorder=3)
@@ -349,10 +351,10 @@ def synapse_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=
 	ax.set_xlim(0-margin_w, w+margin_w)
 	ax.set_ylim(0-margin_h, h+margin_h)
 
-	ax.spines['bottom'].set_color('white')
-	ax.spines['top'].set_color('white')
-	ax.spines['left'].set_color('white')
-	ax.spines['right'].set_color('white')
+	ax.spines['bottom'].set_color('white' if not dark else 'black')
+	ax.spines['top'].set_color('white' if not dark else 'black')
+	ax.spines['left'].set_color('white' if not dark else 'black')
+	ax.spines['right'].set_color('white' if not dark else 'black')
 	ax.xaxis.set_ticks_position('bottom')
 	ax.yaxis.set_ticks_position('left')
 
@@ -362,13 +364,16 @@ def synapse_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=
 		ax.set_xticks([])
 		ax.set_yticks([])
 
-	ax.set_title("Synaptic Connectivity", {'fontsize':12})
+	ax.set_title("Synaptic Connectivity", {'fontsize':12}, color=('black' if not dark else 'white'))
+
+	if(dark):
+		ax.set_facecolor('black')
 
 	#~~~~~
 	return ax
 
 
-def synapse_network_diagram_3d(ax, network):
+def synapse_network_diagram_3d(ax, network, colorVoltages=False, dark=False):
 
 	from mpl_toolkits.mplot3d.art3d import Line3DCollection    
 
@@ -381,6 +386,8 @@ def synapse_network_diagram_3d(ax, network):
 	maxWt = numpy.max(synapseWeights)
 	minWt = numpy.min(synapseWeights)
 	synWt_cmap = zero_midpoint_cmap(orig_cmap=matplotlib.cm.get_cmap('RdBu'), min_val=minWt, max_val=maxWt)
+
+	nodeVoltage_cmap 	= zero_midpoint_cmap(orig_cmap=matplotlib.cm.get_cmap('viridis'), min_val=numpy.min(network.V_eqInhib), max_val=numpy.max(network.V_peak))
 
 	neuronSynEndpts	= []
 	neuronSynWts	= []
@@ -401,12 +408,12 @@ def synapse_network_diagram_3d(ax, network):
 	neuronIDs_outputExcit	= network.get_neuron_ids(synapseTypes=['excitatory'], labels=['output'])
 	neuronIDs_outputInhib	= network.get_neuron_ids(synapseTypes=['inhibitory'], labels=['output'])
 
-	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', c='midnightblue', edgecolors='none', zorder=3, depthshade=True)
-	ax.scatter(xs=neuronCoords[neuronIDs_nonIOInhib,0], ys=neuronCoords[neuronIDs_nonIOInhib,1], zs=neuronCoords[neuronIDs_nonIOInhib,2], marker='o', c='maroon', edgecolors='none', zorder=3, depthshade=True)
-	ax.scatter(xs=neuronCoords[neuronIDs_outputExcit,0], ys=neuronCoords[neuronIDs_outputExcit,1], zs=neuronCoords[neuronIDs_outputExcit,2], marker='s', c='darkorange', edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
-	ax.scatter(xs=neuronCoords[neuronIDs_outputInhib,0], ys=neuronCoords[neuronIDs_outputInhib,1], zs=neuronCoords[neuronIDs_outputInhib,2], marker='s', c='darkorange', edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
-	ax.scatter(xs=neuronCoords[neuronIDs_inputExcit,0], ys=neuronCoords[neuronIDs_inputExcit,1], zs=neuronCoords[neuronIDs_inputExcit,2], marker='^', c='limegreen', edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
-	ax.scatter(xs=neuronCoords[neuronIDs_inputInhib,0], ys=neuronCoords[neuronIDs_inputInhib,1], zs=neuronCoords[neuronIDs_inputInhib,2], marker='^', c='limegreen', edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', c=(network.V[neuronIDs_nonIOExcit] if colorVoltages else 'midnightblue'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='none', zorder=3, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_nonIOInhib,0], ys=neuronCoords[neuronIDs_nonIOInhib,1], zs=neuronCoords[neuronIDs_nonIOInhib,2], marker='o', c=(network.V[neuronIDs_nonIOInhib] if colorVoltages else 'maroon'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='none', zorder=3, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_outputExcit,0], ys=neuronCoords[neuronIDs_outputExcit,1], zs=neuronCoords[neuronIDs_outputExcit,2], marker='s', c=(network.V[neuronIDs_outputExcit] if colorVoltages else 'darkorange'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_outputInhib,0], ys=neuronCoords[neuronIDs_outputInhib,1], zs=neuronCoords[neuronIDs_outputInhib,2], marker='s', c=(network.V[neuronIDs_outputInhib] if colorVoltages else 'darkorange'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_inputExcit,0], ys=neuronCoords[neuronIDs_inputExcit,1], zs=neuronCoords[neuronIDs_inputExcit,2], marker='^', c=(network.V[neuronIDs_inputExcit] if colorVoltages else 'limegreen'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
+	ax.scatter(xs=neuronCoords[neuronIDs_inputInhib,0], ys=neuronCoords[neuronIDs_inputInhib,1], zs=neuronCoords[neuronIDs_inputInhib,2], marker='^', c=(network.V[neuronIDs_inputInhib] if colorVoltages else 'limegreen'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
 
 	# Create cubic bounding box to simulate equal aspect ratio
 	largest_axis_range = numpy.array([neuronCoords[:,0].max()-neuronCoords[:,0].min(), neuronCoords[:,1].max()-neuronCoords[:,1].min(), neuronCoords[:,2].max()-neuronCoords[:,2].min()]).max()
@@ -417,8 +424,8 @@ def synapse_network_diagram_3d(ax, network):
 	for xb, yb, zb in zip(Xb, Yb, Zb):
 	   ax.plot([xb], [yb], [zb], 'w')
 
-	axesGridColor	= (0.95, 0.95, 0.95, 1.0)
-	axesPaneColor 	= (0.99, 0.99, 0.99, 1.0)
+	axesGridColor	= (0.95, 0.95, 0.95, 1.0) if not dark else (0.05, 0.05, 0.05, 1.0)
+	axesPaneColor 	= (0.99, 0.99, 0.99, 1.0) if not dark else (0.01, 0.01, 0.01, 1.0)
 	ax.w_zaxis.line.set_lw(0.)
 	ax.w_xaxis.set_pane_color(axesPaneColor)
 	ax.w_yaxis.set_pane_color(axesPaneColor)
@@ -427,13 +434,15 @@ def synapse_network_diagram_3d(ax, network):
 	# ax.w_yaxis._axinfo.update({'grid' : {'color': axesGridColor}})
 	# ax.w_zaxis._axinfo.update({'grid' : {'color': axesGridColor}})
 
+	ax.azim = 135
+
 	ax.autoscale(tight=True)
 
 	#~~~~~
 	return ax
 
 
-def gapjunction_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensions=True):
+def gapjunction_network_diagram_2d(ax, network, colorVoltages=False, showAxes=False, truePlaneDimensions=True, dark=False):
 
 	try:
 		neuronCoords = network.geometry.surfacePlaneCoords
@@ -451,8 +460,8 @@ def gapjunction_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensi
 	except AttributeError:
 		torroidal = [False, False]
 
-	surfaceBorderColor 		= (0.7, 0.7, 0.7)
-	surfaceBackgroundColor 	= (0.99, 0.99, 0.99)
+	surfaceBorderColor 		= (0.7, 0.7, 0.7) if not dark else (0.3, 0.3, 0.3)
+	surfaceBackgroundColor 	= (0.99, 0.99, 0.99) if not dark else (0.0, 0.0, 0.0)
 	ax.add_patch(patches.Rectangle((0,0), w, h, facecolor=surfaceBackgroundColor, edgecolor='none', zorder=0))
 	ax.plot([0,0], [0,h], color=surfaceBorderColor, linestyle=(':' if torroidal[0] else '-'), zorder=1)
 	ax.plot([w,w], [0,h], color=surfaceBorderColor, linestyle=(':' if torroidal[0] else '-'), zorder=1)
@@ -463,6 +472,10 @@ def gapjunction_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensi
 	minWt = numpy.min(gapjnWeights)
 	# gapWt_cmap = zero_midpoint_cmap(orig_cmap=matplotlib.cm.get_cmap('RdBu'), min_val=minWt, max_val=maxWt)
 	gapWt_cmap = matplotlib.cm.get_cmap('Purples')
+
+	# print numpy.min(network.V_eqInhib)
+	# print numpy.max(network.V_peak)
+	nodeVoltage_cmap 	= zero_midpoint_cmap(orig_cmap=matplotlib.cm.get_cmap('viridis'), min_val=numpy.min(network.V_eqInhib), max_val=numpy.max(network.V_peak))
 
 	edgesPlotted = []
 	for i in range(network.N):
@@ -620,12 +633,12 @@ def gapjunction_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensi
 	# ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c='darkorange', edgecolors='k', linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 	# ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c='darkorange', edgecolors='k', linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 
-	ax.scatter(x=neuronCoords[neuronIDs_nonIOExcit,0], y=neuronCoords[neuronIDs_nonIOExcit,1], marker='o', c='midnightblue', edgecolors='none', zorder=3)
-	ax.scatter(x=neuronCoords[neuronIDs_nonIOInhib,0], y=neuronCoords[neuronIDs_nonIOInhib,1], marker='o', c='maroon', edgecolors='none', zorder=3)
-	ax.scatter(x=neuronCoords[neuronIDs_inputExcit,0], y=neuronCoords[neuronIDs_inputExcit,1], marker='^', c='limegreen', edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
-	ax.scatter(x=neuronCoords[neuronIDs_inputInhib,0], y=neuronCoords[neuronIDs_inputInhib,1], marker='^', c='limegreen', edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4)
-	ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c='darkorange', edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4)
-	ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c='darkorange', edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4)
+	ax.scatter(x=neuronCoords[neuronIDs_nonIOExcit,0], y=neuronCoords[neuronIDs_nonIOExcit,1], marker='o', c=(network.V[neuronIDs_nonIOExcit] if colorVoltages else 'midnightblue'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='none', s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=3)
+	ax.scatter(x=neuronCoords[neuronIDs_nonIOInhib,0], y=neuronCoords[neuronIDs_nonIOInhib,1], marker='o', c=(network.V[neuronIDs_nonIOInhib] if colorVoltages else 'maroon'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='none', s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=3)
+	ax.scatter(x=neuronCoords[neuronIDs_inputExcit,0], y=neuronCoords[neuronIDs_inputExcit,1], marker='^', c=(network.V[neuronIDs_inputExcit] if colorVoltages else 'limegreen'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
+	ax.scatter(x=neuronCoords[neuronIDs_inputInhib,0], y=neuronCoords[neuronIDs_inputInhib,1], marker='^', c=(network.V[neuronIDs_inputInhib] if colorVoltages else 'limegreen'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)
+	ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c=(network.V[neuronIDs_outputExcit] if colorVoltages else 'darkorange'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)
+	ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c=(network.V[neuronIDs_outputInhib] if colorVoltages else 'darkorange'), cmap='viridis', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)
 
 	# ax.scatter(x=neuronCoords[neuronIDs_nonIOExcit,0], y=neuronCoords[neuronIDs_nonIOExcit,1], marker='o', c='blue', edgecolors='none', zorder=3)
 	# ax.scatter(x=neuronCoords[neuronIDs_nonIOInhib,0], y=neuronCoords[neuronIDs_nonIOInhib,1], marker='o', c='red', edgecolors='none', zorder=3)
@@ -642,10 +655,10 @@ def gapjunction_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensi
 	ax.set_xlim(0-margin_w, w+margin_w)
 	ax.set_ylim(0-margin_h, h+margin_h)
 
-	ax.spines['bottom'].set_color('white')
-	ax.spines['top'].set_color('white')
-	ax.spines['left'].set_color('white')
-	ax.spines['right'].set_color('white')
+	ax.spines['bottom'].set_color('white' if not dark else 'black')
+	ax.spines['top'].set_color('white' if not dark else 'black')
+	ax.spines['left'].set_color('white' if not dark else 'black')
+	ax.spines['right'].set_color('white' if not dark else 'black')
 	ax.xaxis.set_ticks_position('bottom')
 	ax.yaxis.set_ticks_position('left')
 
@@ -655,13 +668,16 @@ def gapjunction_network_diagram_2d(ax, network, showAxes=False, truePlaneDimensi
 		ax.set_xticks([])
 		ax.set_yticks([])
 
-	ax.set_title("Gap Junction Connectivity", {'fontsize':12})
+	ax.set_title("Gap Junction Connectivity", {'fontsize':12}, color=('black' if not dark else 'white'))
+
+	if(dark):
+		ax.set_facecolor('black')
 
 	#~~~~~
 	return ax
 
 
-def gapjunction_network_diagram_3d(ax, network):
+def gapjunction_network_diagram_3d(ax, network, colorVoltages=False, dark=False):
 
 	from mpl_toolkits.mplot3d.art3d import Line3DCollection    
 
@@ -675,6 +691,8 @@ def gapjunction_network_diagram_3d(ax, network):
 	minWt = numpy.min(gapjnWeights)
 	gapWt_cmap = zero_midpoint_cmap(orig_cmap=matplotlib.cm.get_cmap('Purples'), min_val=minWt, max_val=maxWt)
 
+	nodeVoltage_cmap = zero_midpoint_cmap(orig_cmap=matplotlib.cm.get_cmap('bone'), min_val=numpy.min(network.V_eqInhib), max_val=numpy.max(network.V_peak))
+
 	neuronGapEndpts	= []
 	neuronGapWts	= []
 	for i in range(network.N):
@@ -683,7 +701,7 @@ def gapjunction_network_diagram_3d(ax, network):
 				neuronGapEndpts.append( [neuronCoords[i], neuronCoords[j]] )
 				neuronGapWts.append(gapjnWeights[i,j])
 
-	edgesGap = Line3DCollection(neuronGapEndpts, cmap=gapWt_cmap)
+	edgesGap = Line3DCollection(neuronGapEndpts, cmap=gapWt_cmap, alpha=(1.0 if not dark else 0.05))
 	edgesGap.set_array(numpy.asarray(neuronGapWts)) # color the segments by our parameter
 	ax.add_collection3d(edgesGap)
 
@@ -694,12 +712,12 @@ def gapjunction_network_diagram_3d(ax, network):
 	neuronIDs_outputExcit	= network.get_neuron_ids(synapseTypes=['excitatory'], labels=['output'])
 	neuronIDs_outputInhib	= network.get_neuron_ids(synapseTypes=['inhibitory'], labels=['output'])
 
-	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', c='midnightblue', edgecolors='none', zorder=3, depthshade=True)
-	ax.scatter(xs=neuronCoords[neuronIDs_nonIOInhib,0], ys=neuronCoords[neuronIDs_nonIOInhib,1], zs=neuronCoords[neuronIDs_nonIOInhib,2], marker='o', c='maroon', edgecolors='none', zorder=3, depthshade=True)
-	ax.scatter(xs=neuronCoords[neuronIDs_outputExcit,0], ys=neuronCoords[neuronIDs_outputExcit,1], zs=neuronCoords[neuronIDs_outputExcit,2], marker='s', c='darkorange', edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
-	ax.scatter(xs=neuronCoords[neuronIDs_outputInhib,0], ys=neuronCoords[neuronIDs_outputInhib,1], zs=neuronCoords[neuronIDs_outputInhib,2], marker='s', c='darkorange', edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
-	ax.scatter(xs=neuronCoords[neuronIDs_inputExcit,0], ys=neuronCoords[neuronIDs_inputExcit,1], zs=neuronCoords[neuronIDs_inputExcit,2], marker='^', c='limegreen', edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
-	ax.scatter(xs=neuronCoords[neuronIDs_inputInhib,0], ys=neuronCoords[neuronIDs_inputInhib,1], zs=neuronCoords[neuronIDs_inputInhib,2], marker='^', c='limegreen', edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', c=(network.V[neuronIDs_nonIOExcit] if colorVoltages else 'midnightblue'), cmap='bone', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='none', zorder=3, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_nonIOInhib,0], ys=neuronCoords[neuronIDs_nonIOInhib,1], zs=neuronCoords[neuronIDs_nonIOInhib,2], marker='o', c=(network.V[neuronIDs_nonIOInhib] if colorVoltages else 'maroon'), cmap='bone', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='none', zorder=3, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_outputExcit,0], ys=neuronCoords[neuronIDs_outputExcit,1], zs=neuronCoords[neuronIDs_outputExcit,2], marker='s', c=(network.V[neuronIDs_outputExcit] if colorVoltages else 'darkorange'), cmap='bone', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_outputInhib,0], ys=neuronCoords[neuronIDs_outputInhib,1], zs=neuronCoords[neuronIDs_outputInhib,2], marker='s', c=(network.V[neuronIDs_outputInhib] if colorVoltages else 'darkorange'), cmap='bone', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_inputExcit,0], ys=neuronCoords[neuronIDs_inputExcit,1], zs=neuronCoords[neuronIDs_inputExcit,2], marker='^', c=(network.V[neuronIDs_inputExcit] if colorVoltages else 'limegreen'), cmap='bone', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='midnightblue', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
+	ax.scatter(xs=neuronCoords[neuronIDs_inputInhib,0], ys=neuronCoords[neuronIDs_inputInhib,1], zs=neuronCoords[neuronIDs_inputInhib,2], marker='^', c=(network.V[neuronIDs_inputInhib] if colorVoltages else 'limegreen'), cmap='bone', vmin=numpy.min(network.V_eqInhib), vmax=numpy.max(network.V_peak), edgecolors='maroon', linewidths=1.5, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
 
 	# Create cubic bounding box to simulate equal aspect ratio
 	largest_axis_range = numpy.array([neuronCoords[:,0].max()-neuronCoords[:,0].min(), neuronCoords[:,1].max()-neuronCoords[:,1].min(), neuronCoords[:,2].max()-neuronCoords[:,2].min()]).max()
@@ -710,8 +728,8 @@ def gapjunction_network_diagram_3d(ax, network):
 	for xb, yb, zb in zip(Xb, Yb, Zb):
 	   ax.plot([xb], [yb], [zb], 'w')
 
-	axesGridColor	= (0.95, 0.95, 0.95, 1.0)
-	axesPaneColor 	= (0.99, 0.99, 0.99, 1.0)
+	axesGridColor	= (0.95, 0.95, 0.95, 1.0) if not dark else (0.05, 0.05, 0.05, 1.0)
+	axesPaneColor 	= (0.99, 0.99, 0.99, 1.0) if not dark else (0.01, 0.01, 0.01, 1.0)
 	ax.w_zaxis.line.set_lw(0.)
 	ax.w_xaxis.set_pane_color(axesPaneColor)
 	ax.w_yaxis.set_pane_color(axesPaneColor)
@@ -719,6 +737,10 @@ def gapjunction_network_diagram_3d(ax, network):
 	# ax.w_xaxis._axinfo.update({'grid' : {'color': axesGridColor}})
 	# ax.w_yaxis._axinfo.update({'grid' : {'color': axesGridColor}})
 	# ax.w_zaxis._axinfo.update({'grid' : {'color': axesGridColor}})
+
+	ax.grid(False)
+
+	ax.azim = 165
 
 	ax.autoscale(tight=True)
 
@@ -736,11 +758,17 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 
 	connectivityWeights = connectivityMatrix if connectivityMatrix is not None else (network.connectionWeights_synExcit - network.connectionWeights_synInhib) # synapse weights
 
-	neuronsDataframe 	= network.get_neurons_dataframe()
+	# neuronsDataframe 	= network.get_neurons_dataframe()
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Get the number of times each neuron spiked in the simulation period:
-	neuronsNumSpikes	= numpy.array( neuronsDataframe.groupby(['neuron_id']).sum().reset_index()['spike'].tolist() )
+	# neuronsNumSpikes	= numpy.array( neuronsDataframe.groupby(['neuron_id']).sum().reset_index()['spike'].tolist() )
+	# print network.get_spike_times()
+	# print [len(spikeTimes_n) for spikeTimes_n in network.get_spike_times()]
+	# exit()
+	neuronsNumSpikes 	= numpy.array([len(spikeTimes_n) for spikeTimes_n in network.get_spike_times()])
+
+
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Calculate the spike rate of each neuron:
@@ -748,6 +776,7 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 	# - basisT is the number of time units to use as the denominator of the rate formula.
 	#   - If the network t unit is ms, then a basisT=1000 calculates numspikes per 1000ms, ie numspikes/sec (spike Hz)
 	neuronsSpikeRates	= (neuronsNumSpikes/network.T_max) * basisT
+
 	maxRate = numpy.max(neuronsSpikeRates)
 	minRate = numpy.min(neuronsSpikeRates)
 
@@ -940,12 +969,12 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 	# ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c='darkorange', edgecolors='k', linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 	# ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c='darkorange', edgecolors='k', linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2), zorder=3)
 
-	ax.scatter(x=neuronCoords[neuronIDs_nonIOExcit,0], y=neuronCoords[neuronIDs_nonIOExcit,1], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOExcit]), edgecolors=outlineColor, linewidths=1, s=1.1*(pyplot.rcParams['lines.markersize']**2), zorder=3)
-	ax.scatter(x=neuronCoords[neuronIDs_nonIOInhib,0], y=neuronCoords[neuronIDs_nonIOInhib,1], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOInhib]), edgecolors=outlineColor, linewidths=1, s=1.1*(pyplot.rcParams['lines.markersize']**2), zorder=3)
-	ax.scatter(x=neuronCoords[neuronIDs_inputExcit,0], y=neuronCoords[neuronIDs_inputExcit,1], marker='^', c=rate_cmap(neuronRateCmapping[neuronIDs_inputExcit]), edgecolors=outlineColor, linewidths=1, s=1.6*(pyplot.rcParams['lines.markersize']**2), zorder=4)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
-	ax.scatter(x=neuronCoords[neuronIDs_inputInhib,0], y=neuronCoords[neuronIDs_inputInhib,1], marker='^', c=rate_cmap(neuronRateCmapping[neuronIDs_inputInhib]), edgecolors=outlineColor, linewidths=1, s=1.6*(pyplot.rcParams['lines.markersize']**2), zorder=4)
-	ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c=rate_cmap(neuronRateCmapping[neuronIDs_outputExcit]), edgecolors=outlineColor, linewidths=1, s=1.6*(pyplot.rcParams['lines.markersize']**2), zorder=4)
-	ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c=rate_cmap(neuronRateCmapping[neuronIDs_outputInhib]), edgecolors=outlineColor, linewidths=1, s=1.6*(pyplot.rcParams['lines.markersize']**2), zorder=4)
+	ax.scatter(x=neuronCoords[neuronIDs_nonIOExcit,0], y=neuronCoords[neuronIDs_nonIOExcit,1], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOExcit]), edgecolors=outlineColor, linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=3)
+	ax.scatter(x=neuronCoords[neuronIDs_nonIOInhib,0], y=neuronCoords[neuronIDs_nonIOInhib,1], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOInhib]), edgecolors=outlineColor, linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=3)
+	ax.scatter(x=neuronCoords[neuronIDs_inputExcit,0], y=neuronCoords[neuronIDs_inputExcit,1], marker='^', c=rate_cmap(neuronRateCmapping[neuronIDs_inputExcit]), edgecolors=outlineColor, linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)
+	ax.scatter(x=neuronCoords[neuronIDs_inputInhib,0], y=neuronCoords[neuronIDs_inputInhib,1], marker='^', c=rate_cmap(neuronRateCmapping[neuronIDs_inputInhib]), edgecolors=outlineColor, linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)
+	ax.scatter(x=neuronCoords[neuronIDs_outputExcit,0], y=neuronCoords[neuronIDs_outputExcit,1], marker='s', c=rate_cmap(neuronRateCmapping[neuronIDs_outputExcit]), edgecolors=outlineColor, linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)
+	ax.scatter(x=neuronCoords[neuronIDs_outputInhib,0], y=neuronCoords[neuronIDs_outputInhib,1], marker='s', c=rate_cmap(neuronRateCmapping[neuronIDs_outputInhib]), edgecolors=outlineColor, linewidths=1, s=1.5*(pyplot.rcParams['lines.markersize']**2)*0.4, zorder=4)
 
 	# ax.scatter(x=neuronCoords[neuronIDs_nonIOExcit,0], y=neuronCoords[neuronIDs_nonIOExcit,1], marker='o', c='blue', edgecolors='none', zorder=3)
 	# ax.scatter(x=neuronCoords[neuronIDs_nonIOInhib,0], y=neuronCoords[neuronIDs_nonIOInhib,1], marker='o', c='red', edgecolors='none', zorder=3)
@@ -977,7 +1006,7 @@ def rate_network_diagram_2d(ax, network, connectivityMatrix=None, basisT=1000, d
 		ax.set_xticks([])
 		ax.set_yticks([])
 
-	ax.set_title("Spike Rates", {'fontsize':12})
+	ax.set_title("Num Spikes", {'fontsize':12})
 
 	#~~~~~
 	return ax
@@ -993,11 +1022,15 @@ def rate_network_diagram_3d(ax, network, connectivityMatrix=None, basisT=1000, d
 
 	neuronCoords = network.geometry.cartesianCoords
 
-	neuronsDataframe 	= network.get_neurons_dataframe()
+	# neuronsDataframe 	= network.get_neurons_dataframe()
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Get the number of times each neuron spiked in the simulation period:
-	neuronsNumSpikes	= numpy.array( neuronsDataframe.groupby(['neuron_id']).sum().reset_index()['spike'].tolist() )
+	# neuronsNumSpikes	= numpy.array( neuronsDataframe.groupby(['neuron_id']).sum().reset_index()['spike'].tolist() )
+	# print network.get_spike_times()
+	# print [len(spikeTimes_n) for spikeTimes_n in network.get_spike_times()]
+	# exit()
+	neuronsNumSpikes 	= numpy.array([len(spikeTimes_n) for spikeTimes_n in network.get_spike_times()])
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Calculate the spike rate of each neuron:
@@ -1055,8 +1088,8 @@ def rate_network_diagram_3d(ax, network, connectivityMatrix=None, basisT=1000, d
 	neuronIDs_outputExcit	= network.get_neuron_ids(synapseTypes=['excitatory'], labels=['output'])
 	neuronIDs_outputInhib	= network.get_neuron_ids(synapseTypes=['inhibitory'], labels=['output'])
 
-	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOExcit]), edgecolors=outlineColor, linewidths=1, s=1.05*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
-	ax.scatter(xs=neuronCoords[neuronIDs_nonIOInhib,0], ys=neuronCoords[neuronIDs_nonIOInhib,1], zs=neuronCoords[neuronIDs_nonIOInhib,2], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOInhib]), edgecolors=outlineColor, linewidths=1, s=1.05*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_nonIOExcit,0], ys=neuronCoords[neuronIDs_nonIOExcit,1], zs=neuronCoords[neuronIDs_nonIOExcit,2], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOExcit]), edgecolors=outlineColor, linewidths=1, s=1.55*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
+	ax.scatter(xs=neuronCoords[neuronIDs_nonIOInhib,0], ys=neuronCoords[neuronIDs_nonIOInhib,1], zs=neuronCoords[neuronIDs_nonIOInhib,2], marker='o', c=rate_cmap(neuronRateCmapping[neuronIDs_nonIOInhib]), edgecolors=outlineColor, linewidths=1, s=1.55*(pyplot.rcParams['lines.markersize']**2), zorder=3, depthshade=True)
 	ax.scatter(xs=neuronCoords[neuronIDs_outputExcit,0], ys=neuronCoords[neuronIDs_outputExcit,1], zs=neuronCoords[neuronIDs_outputExcit,2], marker='s', c=rate_cmap(neuronRateCmapping[neuronIDs_outputExcit]), edgecolors=outlineColor, linewidths=1, s=1.55*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
 	ax.scatter(xs=neuronCoords[neuronIDs_outputInhib,0], ys=neuronCoords[neuronIDs_outputInhib,1], zs=neuronCoords[neuronIDs_outputInhib,2], marker='s', c=rate_cmap(neuronRateCmapping[neuronIDs_outputInhib]), edgecolors=outlineColor, linewidths=1, s=1.55*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)
 	ax.scatter(xs=neuronCoords[neuronIDs_inputExcit,0], ys=neuronCoords[neuronIDs_inputExcit,1], zs=neuronCoords[neuronIDs_inputExcit,2], marker='^', c=rate_cmap(neuronRateCmapping[neuronIDs_inputExcit]), edgecolors=outlineColor, linewidths=1, s=1.7*(pyplot.rcParams['lines.markersize']**2), zorder=4, depthshade=True)	# s=x*(pyplot.rcParams['lines.markersize']**2) is setting the size of the marker to x times its default size)

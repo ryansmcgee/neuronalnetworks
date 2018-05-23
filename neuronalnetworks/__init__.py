@@ -1,6 +1,7 @@
 from neuronalnetworks.models.LIFNetwork import LIFNetwork
 from neuronalnetworks.models.FHNNetwork import FHNNetwork
 from neuronalnetworks.models.IzhikevichNetwork import IzhikevichNetwork
+from neuronalnetworks.models.AdExNetwork import AdExNetwork
 
 from neuronalnetworks.geometries.PlaneSurface import PlaneSurface
 from neuronalnetworks.geometries.CylinderSurface import CylinderSurface
